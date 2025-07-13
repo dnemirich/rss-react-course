@@ -10,6 +10,6 @@ export const fetchCharacters = async (name: string) => {
     return characters
 
   } catch (error) {
-    console.log(error)
+    throw error;
   }
 }

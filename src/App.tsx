@@ -9,6 +9,9 @@ type AppState = {
   searchTerm: string;
   isLoading: boolean;
   results: Character[];
+  shouldThrow: boolean;
+  hasError: boolean;
+  error: string | null;
 };
 
 type AppProps = {};
@@ -20,7 +23,14 @@ export class App extends Component<AppProps, AppState> {
       searchTerm: localStorage.getItem('dnemirich-searchTerm') || '',
       isLoading: false,
       results: [],
+      shouldThrow: false,
+      hasError: false,
+      error: null
     };
+  }
+
+  triggerError = () => {
+    this.setState({shouldThrow: true})
   }
 
   async componentDidMount() {
@@ -33,6 +43,15 @@ export class App extends Component<AppProps, AppState> {
       const data = await fetchCharacters(searchTerm);
       this.setState({ results: data ?? [] });
     } catch (error) {
+      let errorMessage: string;
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else {
+        errorMessage = String(error);
+      }
+
+      this.setState({ hasError: true, error: errorMessage });
+
     } finally {
       this.setState({ isLoading: false });
     }
@@ -49,14 +68,21 @@ export class App extends Component<AppProps, AppState> {
 
   render() {
     return (
-      <div className={'flex flex-col items-center gap-20'}>
+      <div className={'flex flex-col items-center gap-10'}>
         <Header
           value={this.state.searchTerm}
           onChange={this.handleChange}
           onSearch={this.handleSearch}
         />
-        {this.state.isLoading && <Loader/>}
-        <Main data={this.state.results} />
+        {this.state.isLoading && <Loader />}
+        {!this.state.isLoading && this.state.hasError && <p className={'text-red-500 font-bold text-2xl flex items-center min-h-80'}>{this.state.error}</p>}
+        {!this.state.isLoading && !this.state.hasError &&
+          <Main
+            data={this.state.results}
+            shouldThrow={this.state.shouldThrow}
+            onRequestError={this.triggerError}
+          />
+        }
       </div>
     );
   }
