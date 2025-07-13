@@ -1,20 +1,18 @@
 import type { Character } from '../types/types.ts';
+
 import { Card } from './Card.tsx';
 
 type Props = {
   data: Character[];
-  shouldThrow: boolean;
 };
 
-export const CardsList = ({ data, shouldThrow }: Props) => {
-  if (shouldThrow) {
-    throw new Error('Test error from Cards List render!');
-  }
-
+export const CardsList = ({ data }: Props) => {
   if (data.length === 0) {
     return (
-      <h2 className={'text-2xl font-bold flex items-center min-h-80'}>No characters matching your request were found</h2>
-    )
+      <h2 className={'text-2xl font-bold flex items-center min-h-80'}>
+        No characters matching your request were found
+      </h2>
+    );
   }
 
   return (

@@ -1,25 +1,28 @@
-import { Input } from './Input.tsx';
 import { Button } from './Button.tsx';
+import { Input } from './Input.tsx';
 
 type Props = {
-  value: string;
   onChange: (value: string) => void;
   onSearch: () => void;
+  value: string;
 };
 
-export const Header = ({ value, onSearch, onChange }: Props) => {
-
+export const Header = ({ onChange, onSearch, value }: Props) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       onSearch();
     }
   };
 
   return (
-    <header className={''}>
+    <header className={'pt-6'}>
       <div className={'flex justify-center items-center gap-3.5'}>
-        <Input value={value} onChangeHandler={onChange} onKeyDown={handleKeyDown} />
-        <Button onClick={onSearch} title={'Search'}/>
+        <Input
+          onChangeHandler={onChange}
+          onKeyDown={handleKeyDown}
+          value={value}
+        />
+        <Button onClick={onSearch} title={'Search'} />
       </div>
     </header>
   );

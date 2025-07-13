@@ -1,24 +1,25 @@
-export type CharacterShort = {
-  uid: string;
-  name: string;
-  url: string;
-};
-
 export type AllCharactersResponse = {
-  message: string;
-  total_records: number;
-  total_pages: number;
-  previous: string | null;
-  next: string | null;
-  results: CharacterShort[];
   apiVersion: string;
+  message: string;
+  next: null | string;
+  previous: null | string;
+  results: CharacterShort[];
   social: Record<string, string>;
   support: Record<string, unknown>;
   timestamp: string;
+  total_pages: number;
+  total_records: number;
+};
+
+export type Character = {
+  additionalData?: Record<string, string>;
+  description: string;
+  name: string;
+  uid: string;
+  url: string;
 };
 
 export type CharacterFull = {
-  uid: string;
   description: string;
   properties: {
     birth_year: string;
@@ -34,24 +35,24 @@ export type CharacterFull = {
     skin_color: string;
     url: string;
   };
+  uid: string;
+};
+
+export type CharactersApiResponse =
+  | AllCharactersResponse
+  | SingleCharacterResponse;
+
+export type CharacterShort = {
+  name: string;
+  uid: string;
+  url: string;
 };
 
 export type SingleCharacterResponse = {
+  apiVersion: string;
   message: string;
   result: CharacterFull[];
-  apiVersion: string;
   social: Record<string, string>;
   support: Record<string, unknown>;
   timestamp: string;
 };
-
-export type CharactersApiResponse = AllCharactersResponse | SingleCharacterResponse;
-
-
-export type Character = {
-  uid: string;
-  name: string;
-  url: string;
-  description: string;
-  additionalData?: Record<string, string>;
-}

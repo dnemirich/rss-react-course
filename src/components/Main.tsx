@@ -1,25 +1,26 @@
 import type { Character } from '../types/types.ts';
-import { CardsList } from './CardsList.tsx';
+
 import { Button } from './Button.tsx';
-import { Fallback } from './Fallback.tsx';
-import { ErrorBoundary } from './ErrorBoundary.tsx';
+import { CardsList } from './CardsList.tsx';
 
 type Props = {
   data: Character[];
-  shouldThrow: boolean;
   onRequestError: () => void;
+  shouldThrow: boolean;
 };
 
-export const Main = ({ data, shouldThrow, onRequestError }: Props) => {
+export const Main = ({ data, onRequestError, shouldThrow }: Props) => {
+  if (shouldThrow) {
+    throw new Error('Test render error in Main component');
+  }
+
   return (
     <main className={'flex flex-col gap-10'}>
-      <ErrorBoundary fallback={<Fallback />}>
-        <CardsList data={data} shouldThrow={shouldThrow} />
-      </ErrorBoundary>
+      <CardsList data={data} />
       <Button
-        title={'Throw error'}
         className={'ml-auto'}
         onClick={onRequestError}
+        title={'Throw error'}
       />
     </main>
   );
