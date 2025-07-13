@@ -3,6 +3,7 @@ import { Main } from './components/Main.tsx';
 import { Component } from 'react';
 import { fetchCharacters } from './api/characters-api.ts';
 import type { Character } from './types/types.ts';
+import { Loader } from './components/Loader.tsx';
 
 type AppState = {
   searchTerm: string;
@@ -16,7 +17,7 @@ export class App extends Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
     this.state = {
-      searchTerm: localStorage.getItem('searchTerm') || '',
+      searchTerm: localStorage.getItem('dnemirich-searchTerm') || '',
       isLoading: false,
       results: [],
     };
@@ -30,7 +31,6 @@ export class App extends Component<AppProps, AppState> {
     this.setState({ isLoading: true });
     try {
       const data = await fetchCharacters(searchTerm);
-      console.log(data);
       this.setState({ results: data ?? [] });
     } catch (error) {
     } finally {
@@ -43,7 +43,7 @@ export class App extends Component<AppProps, AppState> {
   };
 
   handleSearch = () => {
-    localStorage.setItem('searchTerm', this.state.searchTerm);
+    localStorage.setItem('dnemirich-searchTerm', this.state.searchTerm);
     this.fetchAndSetCharacters(this.state.searchTerm);
   };
 
@@ -55,6 +55,7 @@ export class App extends Component<AppProps, AppState> {
           onChange={this.handleChange}
           onSearch={this.handleSearch}
         />
+        {this.state.isLoading && <Loader/>}
         <Main data={this.state.results} />
       </div>
     );

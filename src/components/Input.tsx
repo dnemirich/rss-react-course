@@ -1,14 +1,14 @@
-import type { ChangeEvent } from 'react';
+import type { ChangeEvent, InputHTMLAttributes } from 'react';
 
-type Props = {
-  value: string;
-  onChange: (value: string) => void;
-};
+type Props = InputHTMLAttributes<HTMLInputElement> & {
+  onChangeHandler: (value: string) => void;
+} ;
 
-export const Input = ({ value, onChange }: Props) => {
+export const Input = ({ onChangeHandler, ...rest }: Props) => {
+
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value.trim();
-    onChange(newValue);
+    onChangeHandler && onChangeHandler(newValue);
   }
 
   return (
@@ -16,10 +16,10 @@ export const Input = ({ value, onChange }: Props) => {
       type="text"
       placeholder={''}
       className={
-        'bg-stone-50 text-stone-900 border-none rounded-md p-2 outline-orange-500'
+        'bg-stone-50 text-stone-900 border-none rounded-md p-2 outline-orange-500 min-w-sm'
       }
-      value={value}
       onChange={handleOnChange}
+      {...rest}
     />
   );
 };

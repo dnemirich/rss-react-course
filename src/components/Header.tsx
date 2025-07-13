@@ -8,11 +8,18 @@ type Props = {
 };
 
 export const Header = ({ value, onSearch, onChange }: Props) => {
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      onSearch();
+    }
+  };
+
   return (
     <header className={''}>
       <div className={'flex justify-center items-center gap-3.5'}>
-        <Input value={value} onChange={onChange} />
-        <Button onClick={onSearch} />
+        <Input value={value} onChangeHandler={onChange} onKeyDown={handleKeyDown} />
+        <Button onClick={onSearch} title={'Search'}/>
       </div>
     </header>
   );

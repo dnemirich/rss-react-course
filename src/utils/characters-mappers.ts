@@ -18,6 +18,15 @@ export const mapCharacters = (
       name: item.properties.name,
       url: item.properties.url,
       description: item.description,
+      additionalData: {
+        gender: item.properties.gender,
+        height: item.properties.height,
+        mass: item.properties.mass,
+        hair_color: item.properties.hair_color,
+        skin_color: item.properties.skin_color,
+        eye_color: item.properties.eye_color,
+        birth_year: item.properties.birth_year,
+      },
     }));
   } else {
     return [];

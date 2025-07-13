@@ -53,4 +53,5 @@ export type Character = {
   name: string;
   url: string;
   description: string;
+  additionalData?: Record<string, string>;
 }

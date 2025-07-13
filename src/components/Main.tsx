@@ -1,4 +1,5 @@
 import type { Character } from '../types/types.ts';
+import { CardsList } from './CardsList.tsx';
 
 type Props = {
   data: Character[];
@@ -7,11 +8,7 @@ type Props = {
 export const Main = ({ data }: Props) => {
   return (
     <main>
-      <ul className={'flex flex-col gap-2'}>
-        {data.map((item, index) => (
-          <li key={index} className={'bg-indigo-800 rounded p-3.5'}>{item.name} {item.description}</li>
-        ))}
-      </ul>
+      <CardsList data={data}/>
     </main>
   );
 };
