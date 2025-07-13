@@ -6,8 +6,7 @@ export const fetchCharacters = async (name: string) => {
   try {
     const response = await api.get<CharactersApiResponse>('/people', {params: {name}})
     const data = response.data;
-    const characters = mapCharacters(data)
-    return characters
+    return mapCharacters(data)
 
   } catch (error) {
     throw error;
