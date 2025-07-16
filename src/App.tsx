@@ -2,10 +2,10 @@ import { Component } from 'react';
 
 import type { Character } from './types/types.ts';
 
-import { fetchCharacters } from './api/characters-api.ts';
-import { Header } from './components/Header.tsx';
-import { Loader } from './components/Loader.tsx';
-import { Main } from './components/Main.tsx';
+import { fetchCharacters } from './api/characters-api';
+import { Header } from './components/Header';
+import { Loader } from './components/Loader';
+import { Main } from './components/Main';
 
 type AppProps = object;
 
