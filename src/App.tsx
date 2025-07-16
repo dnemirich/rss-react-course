@@ -6,6 +6,7 @@ import { fetchCharacters } from './api/characters-api';
 import { Header } from './components/Header/Header.tsx';
 import { Loader } from './components/Loader/Loader.tsx';
 import { Main } from './components/Main/Main.tsx';
+import { LS_KEY } from './constants/constants.ts';
 
 type AppProps = object;
 
@@ -26,7 +27,7 @@ export class App extends Component<AppProps, AppState> {
       hasError: false,
       isLoading: false,
       results: [],
-      searchTerm: localStorage.getItem('dnemirich-searchTerm') || '',
+      searchTerm: localStorage.getItem(LS_KEY) || '',
       shouldThrow: false,
     };
   }
@@ -59,8 +60,9 @@ export class App extends Component<AppProps, AppState> {
   };
 
   handleSearch = () => {
-    localStorage.setItem('dnemirich-searchTerm', this.state.searchTerm.trim());
-    this.fetchAndSetCharacters(this.state.searchTerm.trim());
+    const searchTerm = this.state.searchTerm.trim();
+    localStorage.setItem(LS_KEY, searchTerm);
+    this.fetchAndSetCharacters(searchTerm);
   };
 
   render() {
