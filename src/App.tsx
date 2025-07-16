@@ -55,12 +55,12 @@ export class App extends Component<AppProps, AppState> {
   };
 
   handleChange = (value: string) => {
-    this.setState({ searchTerm: value.trim() });
+    this.setState({ searchTerm: value });
   };
 
   handleSearch = () => {
-    localStorage.setItem('dnemirich-searchTerm', this.state.searchTerm);
-    this.fetchAndSetCharacters(this.state.searchTerm);
+    localStorage.setItem('dnemirich-searchTerm', this.state.searchTerm.trim());
+    this.fetchAndSetCharacters(this.state.searchTerm.trim());
   };
 
   render() {

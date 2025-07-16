@@ -10,7 +10,7 @@
     "lint:fix": "eslint . --fix",
     "format:fix": "prettier --write .",
     "preview": "vite preview",
-    "prepare": "husky"
+    "prepare": "husky && chmod ug+x .husky/*"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
