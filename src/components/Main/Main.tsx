@@ -1,7 +1,7 @@
-import type { Character } from '../types/types.ts';
+import type { Character } from '../../types/types.ts';
 
-import { Button } from './Button.tsx';
-import { CardsList } from './CardsList.tsx';
+import { Button } from '../Button/Button.tsx';
+import { CardsList } from '../CardsList/CardsList.tsx';
 
 type Props = {
   data: Character[];
