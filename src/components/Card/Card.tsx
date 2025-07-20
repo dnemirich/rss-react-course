@@ -1,4 +1,4 @@
-import type { Character } from '../types/types.ts';
+import type { Character } from '../../types/types.ts';
 
 type Props = {
   item: Character;

@@ -6,8 +6,7 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
 
 export const Input = ({ onChangeHandler, ...rest }: Props) => {
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value.trim();
-    onChangeHandler(newValue);
+    onChangeHandler(e.target.value);
   };
 
   return (

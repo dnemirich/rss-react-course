@@ -2,10 +2,11 @@ import { Component } from 'react';
 
 import type { Character } from './types/types.ts';
 
-import { fetchCharacters } from './api/characters-api.ts';
-import { Header } from './components/Header.tsx';
-import { Loader } from './components/Loader.tsx';
-import { Main } from './components/Main.tsx';
+import { fetchCharacters } from './api/characters-api';
+import { Header } from './components/Header/Header.tsx';
+import { Loader } from './components/Loader/Loader.tsx';
+import { Main } from './components/Main/Main.tsx';
+import { LS_KEY } from './constants/constants.ts';
 
 type AppProps = object;
 
@@ -26,7 +27,7 @@ export class App extends Component<AppProps, AppState> {
       hasError: false,
       isLoading: false,
       results: [],
-      searchTerm: localStorage.getItem('dnemirich-searchTerm') || '',
+      searchTerm: localStorage.getItem(LS_KEY) || '',
       shouldThrow: false,
     };
   }
@@ -55,12 +56,13 @@ export class App extends Component<AppProps, AppState> {
   };
 
   handleChange = (value: string) => {
-    this.setState({ searchTerm: value.trim() });
+    this.setState({ searchTerm: value });
   };
 
   handleSearch = () => {
-    localStorage.setItem('dnemirich-searchTerm', this.state.searchTerm);
-    this.fetchAndSetCharacters(this.state.searchTerm);
+    const searchTerm = this.state.searchTerm.trim();
+    localStorage.setItem(LS_KEY, searchTerm);
+    this.fetchAndSetCharacters(searchTerm);
   };
 
   render() {

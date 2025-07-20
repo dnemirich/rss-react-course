@@ -1,5 +1,5 @@
-import { Button } from './Button.tsx';
-import { Input } from './Input.tsx';
+import { Button } from '../Button/Button.tsx';
+import { Input } from '../Input/Input.tsx';
 
 type Props = {
   onChange: (value: string) => void;
