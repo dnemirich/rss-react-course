@@ -1,4 +1,10 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 
 import * as api from './api/characters-api';
 import { App } from './App';
@@ -16,54 +22,76 @@ beforeEach(() => {
 });
 
 describe('App (localStorage integration)', () => {
-  it('search value should be added to ls on search', () => {
+  it('search value should be added to ls on search', async () => {
     render(<App />);
     const input = screen.getByRole('textbox');
-    fireEvent.change(input, { target: { value: '  test value  ' } });
-    fireEvent.click(screen.getByRole('button', { name: /search/i }));
+    await act(async () => {
+      fireEvent.change(input, { target: { value: '  test value  ' } });
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /search/i }));
+    });
     expect(localStorage.getItem(LS_KEY)).toBe('test value');
   });
 
-  it('ls value should be renewed when the search is fired', () => {
+  it('ls value should be renewed when the search is fired', async () => {
     localStorage.setItem(LS_KEY, 'old');
     render(<App />);
     const input = screen.getByRole('textbox');
-    fireEvent.change(input, { target: { value: 'new query' } });
-    fireEvent.click(screen.getByRole('button', { name: /search/i }));
+    await act(async () => {
+      fireEvent.change(input, { target: { value: 'new query' } });
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /search/i }));
+    });
     expect(localStorage.getItem(LS_KEY)).toBe('new query');
   });
 
-  it('input should have value from ls after mounting', () => {
+  it('input should have value from ls after mounting', async () => {
     localStorage.setItem(LS_KEY, 'value from storage');
-    render(<App />);
+    await act(async () => {
+      render(<App />);
+    });
     expect(screen.getByRole('textbox')).toHaveValue('value from storage');
   });
 
-  it('input should be empty when ls value is omit', () => {
-    render(<App />);
+  it('input should be empty when ls value is omit', async () => {
+    await act(async () => {
+      render(<App />);
+    });
     expect(screen.getByRole('textbox')).toHaveValue('');
   });
 
-  it('trailing spaces should be trimmed ', () => {
+  it('trailing spaces should be trimmed ', async () => {
     render(<App />);
     const input = screen.getByRole('textbox');
-    fireEvent.change(input, { target: { value: '   spaced   ' } });
-    fireEvent.click(screen.getByRole('button', { name: /search/i }));
+    await act(async () => {
+      fireEvent.change(input, { target: { value: '   spaced   ' } });
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /search/i }));
+    });
     expect(localStorage.getItem(LS_KEY)).toBe('spaced');
   });
 
-  it('spaces within the text should remain intact', () => {
+  it('spaces within the text should remain intact', async () => {
     render(<App />);
     const input = screen.getByRole('textbox');
-    fireEvent.change(input, { target: { value: 'Luke Skywalker' } });
-    fireEvent.click(screen.getByRole('button', { name: /search/i }));
+    await act(async () => {
+      fireEvent.change(input, { target: { value: 'Luke Skywalker' } });
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /search/i }));
+    });
     expect(localStorage.getItem(LS_KEY)).toBe('Luke Skywalker');
   });
 
-  it('state should renew when value is changed', () => {
+  it('state should renew when value is changed', async () => {
     render(<App />);
     const input = screen.getByRole('textbox');
-    fireEvent.change(input, { target: { value: 'changed value' } });
+    await act(async () => {
+      fireEvent.change(input, { target: { value: 'changed value' } });
+    });
     expect(input).toHaveValue('changed value');
   });
 });
