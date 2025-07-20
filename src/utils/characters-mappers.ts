@@ -11,7 +11,7 @@ export const mapCharacters = (
       uid: item.uid,
       url: item.url,
     }));
-  } else if ('result' in characters) {
+  } else {
     const result = characters.result;
     return result.map((item) => ({
       additionalData: {
@@ -28,7 +28,5 @@ export const mapCharacters = (
       uid: item.uid,
       url: item.properties.url,
     }));
-  } else {
-    return [];
   }
 };
