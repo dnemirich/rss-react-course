@@ -9,7 +9,7 @@ import reactCompiler from 'eslint-plugin-react-compiler';
 import perfectionist from 'eslint-plugin-perfectionist';
 
 export default tseslint.config(
-  { ignores: ['dist'] },
+  { ignores: ['dist', 'coverage'] },
   {
     extends: [
       js.configs.recommended,
