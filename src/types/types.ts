@@ -1,58 +1,36 @@
-export type AllCharactersResponse = {
-  apiVersion: string;
-  message: string;
-  next: null | string;
-  previous: null | string;
-  results: CharacterShort[];
-  social: Record<string, string>;
-  support: Record<string, unknown>;
-  timestamp: string;
-  total_pages: number;
-  total_records: number;
+export type Artwork = {
+  artist_title: string;
+  artwork_type_title: string;
+  category_titles: string[];
+  date_display: string;
+  description: string;
+  dimensions: string;
+  gallery_title: string;
+  id: number;
+  image_id: string;
+  medium_display: string;
+  place_of_origin: string;
+  short_description: string;
+  title: string;
 };
 
-export type Character = {
-  additionalData?: Record<string, string>;
-  description: string;
-  name: string;
-  uid: string;
-  url: string;
+export type RequestParams = {
+  fields?: string;
+  from?: number;
+  limit?: number;
+  page?: number;
+  q?: string;
+  size?: number;
 };
 
-export type CharacterFull = {
-  description: string;
-  properties: {
-    birth_year: string;
-    created: string;
-    edited: string;
-    eye_color: string;
-    gender: string;
-    hair_color: string;
-    height: string;
-    homeworld: string;
-    mass: string;
-    name: string;
-    skin_color: string;
-    url: string;
+export type ResponseType = {
+  data: Artwork[];
+  pagination: {
+    current_page: number;
+    limit: number;
+    next_url: string;
+    offset: number;
+    total: number;
+    total_pages: number;
   };
-  uid: string;
-};
-
-export type CharactersApiResponse =
-  | AllCharactersResponse
-  | SingleCharacterResponse;
-
-export type CharacterShort = {
-  name: string;
-  uid: string;
-  url: string;
-};
-
-export type SingleCharacterResponse = {
-  apiVersion: string;
-  message: string;
-  result: CharacterFull[];
-  social: Record<string, string>;
-  support: Record<string, unknown>;
-  timestamp: string;
 };
