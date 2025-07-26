@@ -1,59 +1,51 @@
 import { within } from '@testing-library/dom';
 import { render, screen } from '@testing-library/react';
 
-import {
-  mockCharacterData,
-  mockCharacterDataExtended,
-} from '../../test-utils/mock-data.ts';
+import { mockArtworkData } from '../../test-utils/mock-data.ts';
 import { CardsList } from './CardsList';
 
 describe('CardsList', () => {
   it('Cards should be rendered', () => {
-    render(<CardsList data={mockCharacterData} />);
-    expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
-    expect(screen.getByText('Leia Organa')).toBeInTheDocument();
+    render(<CardsList data={mockArtworkData} />);
+    expect(screen.getByText('Camille Pissarro')).toBeInTheDocument();
+    expect(
+      screen.getByText('State Birds and Flowers Quilt')
+    ).toBeInTheDocument();
   });
 
   it('correct message should be displayed for an empty array', () => {
     render(<CardsList data={[]} />);
     expect(
-      screen.getByText(/No characters matching your request were found/i)
+      screen.getByText(/No artworks matching your request were found/i)
     ).toBeInTheDocument();
   });
 
-  it('Correct description should be added', () => {
-    render(<CardsList data={mockCharacterData} />);
-    const cardItems = screen.getAllByRole('listitem');
-    const secondCard = cardItems[1];
-    expect(within(secondCard).getByText(/No description/i)).toBeInTheDocument();
-    expect(
-      within(cardItems[0]).queryByText(/No description/i)
-    ).not.toBeInTheDocument();
+  it('displays placeholder if image_id is missing', () => {
+    render(<CardsList data={mockArtworkData} />);
+    const card = screen
+      .getByText('Cupid and Psyche: Design for a Ceiling')
+      .closest('li');
+    expect(card).not.toBeNull();
+    if (card) {
+      expect(
+        within(card).getByText(/Image is not available/i)
+      ).toBeInTheDocument();
+      expect(within(card).queryByRole('img')).toBeNull();
+    }
   });
 
-  it('Additional info should be rendered', () => {
-    render(<CardsList data={mockCharacterDataExtended} />);
-    const card = screen.getByRole('listitem');
+  it('all main info should be shown on the card', () => {
+    render(<CardsList data={mockArtworkData} />);
+    expect(screen.getByText('Camille Pissarro')).toBeInTheDocument();
+    expect(
+      screen.getByText('The Banks of the Marne in Winter')
+    ).toBeInTheDocument();
+    expect(screen.getByText('1866')).toBeInTheDocument();
 
-    expect(within(card).getByText(/birth year:/i)).toBeInTheDocument();
-    expect(within(card).getByText('41.9BBY')).toBeInTheDocument();
-
-    expect(within(card).getByText(/eye color:/i)).toBeInTheDocument();
-    expect(within(card).getByText('yellow')).toBeInTheDocument();
-
-    expect(within(card).getByText(/gender:/i)).toBeInTheDocument();
-    expect(within(card).getByText('male')).toBeInTheDocument();
-
-    expect(within(card).getByText(/hair color:/i)).toBeInTheDocument();
-    expect(within(card).getByText('none')).toBeInTheDocument();
-
-    expect(within(card).getByText(/height:/i)).toBeInTheDocument();
-    expect(within(card).getByText('202')).toBeInTheDocument();
-
-    expect(within(card).getByText(/mass:/i)).toBeInTheDocument();
-    expect(within(card).getByText('136')).toBeInTheDocument();
-
-    expect(within(card).getByText(/skin color:/i)).toBeInTheDocument();
-    expect(within(card).getByText('white')).toBeInTheDocument();
+    expect(screen.getByText('François Boucher')).toBeInTheDocument();
+    expect(
+      screen.getByText('Cupid and Psyche: Design for a Ceiling')
+    ).toBeInTheDocument();
+    expect(screen.getByText('c. 1740-1760')).toBeInTheDocument();
   });
 });

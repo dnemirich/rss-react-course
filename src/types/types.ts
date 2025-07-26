@@ -3,14 +3,12 @@ export type Artwork = {
   artwork_type_title: string;
   category_titles: string[];
   date_display: string;
-  description: string;
-  dimensions: string;
-  gallery_title: string;
+  description: null | string;
+  dimensions: null | string;
   id: number;
-  image_id: string;
+  image_id: null | string;
   medium_display: string;
   place_of_origin: string;
-  short_description: string;
   title: string;
 };
 
@@ -28,7 +26,7 @@ export type ResponseType = {
   pagination: {
     current_page: number;
     limit: number;
-    next_url: string;
+    next_url?: string;
     offset: number;
     total: number;
     total_pages: number;

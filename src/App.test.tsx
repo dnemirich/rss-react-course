@@ -6,14 +6,12 @@ import {
   waitFor,
 } from '@testing-library/react';
 
-import * as api from './api/characters-api';
+import * as api from './api/artworks-api.ts';
 import { App } from './App';
-import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary.tsx';
-import { Fallback } from './components/Fallback/Fallback.tsx';
-import { LS_KEY } from './constants/constants.ts';
+import { LS_KEY } from './constants/search-constants.ts';
 
-jest.mock('./api/characters-api', () => ({
-  fetchCharacters: jest.fn(),
+jest.mock('./api/artworks-api.ts', () => ({
+  fetchAllArtworks: jest.fn(),
 }));
 
 beforeEach(() => {
@@ -78,12 +76,12 @@ describe('App (localStorage integration)', () => {
     render(<App />);
     const input = screen.getByRole('textbox');
     await act(async () => {
-      fireEvent.change(input, { target: { value: 'Luke Skywalker' } });
+      fireEvent.change(input, { target: { value: 'Da Vinci' } });
     });
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: /search/i }));
     });
-    expect(localStorage.getItem(LS_KEY)).toBe('Luke Skywalker');
+    expect(localStorage.getItem(LS_KEY)).toBe('Da Vinci');
   });
 
   it('state should renew when value is changed', async () => {
@@ -103,7 +101,7 @@ describe('App UI/async scenarios', () => {
   });
 
   it('loader should render during loading', async () => {
-    (api.fetchCharacters as jest.Mock).mockImplementation(
+    (api.fetchAllArtworks as jest.Mock).mockImplementation(
       () => new Promise(() => {})
     );
     render(<App />);
@@ -111,7 +109,7 @@ describe('App UI/async scenarios', () => {
   });
 
   it('error should be displayed for response error', async () => {
-    (api.fetchCharacters as jest.Mock).mockRejectedValueOnce(
+    (api.fetchAllArtworks as jest.Mock).mockRejectedValueOnce(
       new Error('Network error')
     );
     render(<App />);
@@ -120,36 +118,8 @@ describe('App UI/async scenarios', () => {
     );
   });
 
-  it('Fallback should be rendered when throw error button is clicked', async () => {
-    (api.fetchCharacters as jest.Mock).mockResolvedValueOnce([]);
-
-    jest.spyOn(console, 'error').mockImplementation(() => {});
-
-    render(
-      <ErrorBoundary fallback={<Fallback />}>
-        <App />
-      </ErrorBoundary>
-    );
-
-    await waitFor(() =>
-      expect(
-        screen.getByRole('button', { name: /Throw error/i })
-      ).toBeInTheDocument()
-    );
-
-    fireEvent.click(screen.getByRole('button', { name: /Throw error/i }));
-
-    await waitFor(() =>
-      expect(
-        screen.getByText(
-          /Ooops, something went wrong! Try to refresh the page./i
-        )
-      ).toBeInTheDocument()
-    );
-  });
-
   it('correct error message should be rendered when error has some other type', async () => {
-    (api.fetchCharacters as jest.Mock).mockRejectedValueOnce(
+    (api.fetchAllArtworks as jest.Mock).mockRejectedValueOnce(
       'Custom error as string'
     );
     render(<App />);

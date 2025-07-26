@@ -8,7 +8,6 @@ export const fieldsListLong = [
   'description',
   'dimensions',
   'medium_display',
-  'gallery_title',
   'artwork_type_title',
   'category_titles',
 ];
