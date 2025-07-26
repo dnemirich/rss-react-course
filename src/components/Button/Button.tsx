@@ -10,7 +10,7 @@ export const Button = ({ className, title, ...rest }: Props) => {
       {...rest}
       className={[
         className,
-        'bg-orange-500 text-white rounded-md p-2 font-bold hover:bg-orange-400 max-w-40',
+        'bg-stone-500 text-white p-2 font-bold hover:bg-stone-400 max-w-40 shadow-md',
       ]
         .filter(Boolean)
         .join(' ')}
