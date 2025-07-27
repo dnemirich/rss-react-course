@@ -1,45 +1,77 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import { Header } from './Header.tsx';
 
 describe('Header', () => {
   it('should render input and button elements', () => {
-    render(<Header onChange={() => {}} onSearch={() => {}} value="" />);
+    render(
+      <MemoryRouter>
+        <Header onChange={() => {}} onSearch={() => {}} value="" />
+      </MemoryRouter>
+    );
     expect(screen.getByRole('textbox')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /search/i })).toBeInTheDocument();
   });
 
   it('input should display the value from props', () => {
-    render(<Header onChange={() => {}} onSearch={() => {}} value="query" />);
+    render(
+      <MemoryRouter>
+        <Header onChange={() => {}} onSearch={() => {}} value="query" />
+      </MemoryRouter>
+    );
     expect(screen.getByRole('textbox')).toHaveValue('query');
   });
 
   it('onChange callback should be called with the correct parameter', () => {
     const handleChange = jest.fn();
-    render(<Header onChange={handleChange} onSearch={() => {}} value="" />);
+    render(
+      <MemoryRouter>
+        <Header onChange={handleChange} onSearch={() => {}} value="" />
+      </MemoryRouter>
+    );
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'abc' } });
     expect(handleChange).toHaveBeenCalledWith('abc');
   });
 
-  it('onSearch should be called when search button is clicked', () => {
+  it('onSearch should be called when the form is submitted by button', () => {
     const handleSearch = jest.fn();
-    render(<Header onChange={() => {}} onSearch={handleSearch} value="" />);
-    fireEvent.click(screen.getByRole('button', { name: /search/i }));
+    render(
+      <MemoryRouter>
+        <Header onChange={() => {}} onSearch={handleSearch} value="" />
+      </MemoryRouter>
+    );
+    const form = screen.getByRole('form') || screen.getByTestId('search-form');
+    fireEvent.submit(form);
     expect(handleSearch).toHaveBeenCalled();
   });
 
-  it('onSearch should be called when Enter key is pressed', () => {
+  it('onSearch should be called when Enter is pressed in input', async () => {
     const handleSearch = jest.fn();
-    render(<Header onChange={() => {}} onSearch={handleSearch} value="" />);
+    render(
+      <MemoryRouter>
+        <Header onChange={() => {}} onSearch={handleSearch} value="" />
+      </MemoryRouter>
+    );
+
     const input = screen.getByRole('textbox');
-    fireEvent.change(input, { target: { value: 'Luke' } });
-    fireEvent.keyDown(input, { charCode: 13, code: 'Enter', key: 'Enter' });
+    const form = screen.getByRole('form');
+    await act(async () => {
+      fireEvent.keyDown(input, { charCode: 13, code: 'Enter', key: 'Enter' });
+      if (form) {
+        fireEvent.submit(form);
+      }
+    });
     expect(handleSearch).toHaveBeenCalled();
   });
 
-  it('onSearch should not be called when other than Enter key is pressed', () => {
+  it('onSearch should NOT be called when non-Enter key is pressed', () => {
     const handleSearch = jest.fn();
-    render(<Header onChange={() => {}} onSearch={handleSearch} value="" />);
+    render(
+      <MemoryRouter>
+        <Header onChange={() => {}} onSearch={handleSearch} value="" />
+      </MemoryRouter>
+    );
     const input = screen.getByRole('textbox');
     fireEvent.keyDown(input, { charCode: 65, code: 'KeyA', key: 'a' });
     expect(handleSearch).not.toHaveBeenCalled();

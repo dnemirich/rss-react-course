@@ -1,8 +1,4 @@
-import type {
-  Artwork,
-  RequestParams,
-  ResponseType,
-} from '../widgets/shared/types/types.ts';
+import type { Artwork, RequestParams, ResponseType } from 'entities/artwork';
 
 export const mockSearchData: Artwork[] = [
   {

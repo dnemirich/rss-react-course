@@ -1,12 +1,21 @@
 import { within } from '@testing-library/dom';
 import { render, screen } from '@testing-library/react';
+import { mockArtworkData } from 'shared/utils/test-utils/mock-data.ts';
 
-import { mockArtworkData } from '../../shared/utils/test-utils/mock-data.ts';
 import { CardsList } from './CardsList.tsx';
+
+const mockOnSelectedItem = jest.fn();
+const mockSelectedId = '';
 
 describe('CardsList', () => {
   it('Cards should be rendered', () => {
-    render(<CardsList data={mockArtworkData} />);
+    render(
+      <CardsList
+        data={mockArtworkData}
+        onSelectedItem={mockOnSelectedItem}
+        selectedId={mockSelectedId}
+      />
+    );
     expect(screen.getByText('Camille Pissarro')).toBeInTheDocument();
     expect(
       screen.getByText('State Birds and Flowers Quilt')
@@ -14,14 +23,26 @@ describe('CardsList', () => {
   });
 
   it('correct message should be displayed for an empty array', () => {
-    render(<CardsList data={[]} />);
+    render(
+      <CardsList
+        data={[]}
+        onSelectedItem={mockOnSelectedItem}
+        selectedId={mockSelectedId}
+      />
+    );
     expect(
       screen.getByText(/No artworks matching your request were found/i)
     ).toBeInTheDocument();
   });
 
   it('displays placeholder if image_id is missing', () => {
-    render(<CardsList data={mockArtworkData} />);
+    render(
+      <CardsList
+        data={mockArtworkData}
+        onSelectedItem={mockOnSelectedItem}
+        selectedId={mockSelectedId}
+      />
+    );
     const card = screen
       .getByText('Cupid and Psyche: Design for a Ceiling')
       .closest('li');
@@ -35,7 +56,13 @@ describe('CardsList', () => {
   });
 
   it('all main info should be shown on the card', () => {
-    render(<CardsList data={mockArtworkData} />);
+    render(
+      <CardsList
+        data={mockArtworkData}
+        onSelectedItem={mockOnSelectedItem}
+        selectedId={mockSelectedId}
+      />
+    );
     expect(screen.getByText('Camille Pissarro')).toBeInTheDocument();
     expect(
       screen.getByText('The Banks of the Marne in Winter')

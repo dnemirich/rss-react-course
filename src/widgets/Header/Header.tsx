@@ -38,6 +38,7 @@ export const Header = ({ onChange, onSearch, value }: Props) => {
             <form
               className={'flex justify-center items-center gap-3.5'}
               onSubmit={handleSubmit}
+              role={'form'}
             >
               <Input onChangeHandler={onChange} value={value} />
               <Button title={'Search'} type={'submit'} />

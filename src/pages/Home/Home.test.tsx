@@ -5,12 +5,13 @@ import {
   screen,
   waitFor,
 } from '@testing-library/react';
+import * as api from 'entities/artwork/model/artworks-api.ts';
+import { MemoryRouter } from 'react-router-dom';
+import { LS_KEY } from 'shared/constants/search-constants.ts';
 
-import * as api from '../../entities/artwork/model/artworks-api.ts';
-import { LS_KEY } from '../../widgets/shared/constants/search-constants.ts';
 import { HomePage } from './HomePage.tsx';
 
-jest.mock('./api/artworks-api.ts', () => ({
+jest.mock('entities/artwork/model/artworks-api.ts', () => ({
   fetchAllArtworks: jest.fn(),
 }));
 
@@ -21,7 +22,11 @@ beforeEach(() => {
 
 describe('App (localStorage integration)', () => {
   it('search value should be added to ls on search', async () => {
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
     const input = screen.getByRole('textbox');
     await act(async () => {
       fireEvent.change(input, { target: { value: '  test value  ' } });
@@ -34,7 +39,11 @@ describe('App (localStorage integration)', () => {
 
   it('ls value should be renewed when the search is fired', async () => {
     localStorage.setItem(LS_KEY, 'old');
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
     const input = screen.getByRole('textbox');
     await act(async () => {
       fireEvent.change(input, { target: { value: 'new query' } });
@@ -48,20 +57,32 @@ describe('App (localStorage integration)', () => {
   it('input should have value from ls after mounting', async () => {
     localStorage.setItem(LS_KEY, 'value from storage');
     await act(async () => {
-      render(<HomePage />);
+      render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      );
     });
     expect(screen.getByRole('textbox')).toHaveValue('value from storage');
   });
 
   it('input should be empty when ls value is omit', async () => {
     await act(async () => {
-      render(<HomePage />);
+      render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      );
     });
     expect(screen.getByRole('textbox')).toHaveValue('');
   });
 
   it('trailing spaces should be trimmed ', async () => {
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
     const input = screen.getByRole('textbox');
     await act(async () => {
       fireEvent.change(input, { target: { value: '   spaced   ' } });
@@ -73,7 +94,11 @@ describe('App (localStorage integration)', () => {
   });
 
   it('spaces within the text should remain intact', async () => {
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
     const input = screen.getByRole('textbox');
     await act(async () => {
       fireEvent.change(input, { target: { value: 'Da Vinci' } });
@@ -85,7 +110,11 @@ describe('App (localStorage integration)', () => {
   });
 
   it('state should renew when value is changed', async () => {
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
     const input = screen.getByRole('textbox');
     await act(async () => {
       fireEvent.change(input, { target: { value: 'changed value' } });
@@ -104,7 +133,11 @@ describe('App UI/async scenarios', () => {
     (api.fetchAllArtworks as jest.Mock).mockImplementation(
       () => new Promise(() => {})
     );
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
     expect(screen.getByRole('status')).toBeInTheDocument();
   });
 
@@ -112,7 +145,11 @@ describe('App UI/async scenarios', () => {
     (api.fetchAllArtworks as jest.Mock).mockRejectedValueOnce(
       new Error('Network error')
     );
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
     await waitFor(() =>
       expect(screen.getByText('Network error')).toBeInTheDocument()
     );
@@ -122,7 +159,11 @@ describe('App UI/async scenarios', () => {
     (api.fetchAllArtworks as jest.Mock).mockRejectedValueOnce(
       'Custom error as string'
     );
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
     await waitFor(() => {
       expect(screen.getByText('Custom error as string')).toBeInTheDocument();
     });

@@ -1,6 +1,6 @@
 import { imgUrl } from 'shared/constants/items-constants.ts';
 
-import type { Artwork } from '../../model/artwork-types.ts';
+import type { Artwork } from '../../model';
 
 type Props = {
   item: Artwork;
