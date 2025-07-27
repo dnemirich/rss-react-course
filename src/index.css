@@ -28,7 +28,7 @@ body {
 }
 
 body {
-  background-color: var(--color-stone-50);
+  background-color: var(--color-stone-100);
   color: var(--color-stone-900);
   font-family: 'Roboto', sans-serif;
   font-weight: 400;

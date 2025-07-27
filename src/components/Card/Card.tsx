@@ -9,8 +9,8 @@ export const Card = ({ item }: Props) => {
   const { artist_title, date_display, image_id, title } = item;
 
   return (
-    <li className="bg-stone-100 rounded min-w-0 w-full flex flex-col max-w-sm shadow-md hover:shadow-lg break-inside-avoid">
-      <div className="w-full max-h-[320px] min-h-[180px] flex items-center justify-center overflow-hidden rounded">
+    <li className="bg-stone-50 rounded min-w-0 w-full flex flex-col max-w-sm shadow-md hover:shadow-lg break-inside-avoid">
+      <div className="w-full p-2 max-h-[320px] min-h-[180px] flex items-center justify-center overflow-hidden rounded">
         {image_id ? (
           <img
             alt={title}
@@ -18,7 +18,7 @@ export const Card = ({ item }: Props) => {
             src={`${imgUrl}/${image_id}/full/400,/0/default.jpg`}
           />
         ) : (
-          <div className="flex flex-col items-center justify-center w-full min-h-80 bg-stone-300 text-stone-50 text-sm">
+          <div className="flex flex-col items-center justify-center w-full min-h-60 h-full bg-stone-300 text-stone-50 text-sm">
             Image is not available
           </div>
         )}
