@@ -4,9 +4,11 @@ import { Card } from '../Card/Card.tsx';
 
 type Props = {
   data: Artwork[];
+  onSelectedItem: (id: number) => void;
+  selectedId: string;
 };
 
-export const CardsList = ({ data }: Props) => {
+export const CardsList = ({ data, onSelectedItem, selectedId }: Props) => {
   if (data.length === 0) {
     return (
       <h2 className={'text-2xl font-bold flex items-center min-h-80'}>
@@ -24,7 +26,12 @@ export const CardsList = ({ data }: Props) => {
       style={{ gridTemplateRows: 'masonry' }}
     >
       {data.map((item, index) => (
-        <Card item={item} key={index} />
+        <Card
+          item={item}
+          key={index}
+          onClick={onSelectedItem}
+          selectedId={selectedId}
+        />
       ))}
     </ul>
   );

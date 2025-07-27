@@ -4,12 +4,20 @@ import { imgUrl } from '../../constants/items-constants.ts';
 
 type Props = {
   item: Artwork;
+  onClick: (id: number) => void;
+  selectedId: string;
 };
-export const Card = ({ item }: Props) => {
-  const { artist_title, date_display, image_id, title } = item;
 
+export const Card = ({ item, onClick, selectedId }: Props) => {
+  const { artist_title, date_display, id, image_id, title } = item;
+  const selected = id === Number(selectedId);
   return (
-    <li className="bg-stone-50 rounded min-w-0 w-full flex flex-col max-w-sm shadow-md hover:shadow-lg break-inside-avoid">
+    <li
+      className={`bg-stone-50 rounded min-w-0 w-full flex flex-col max-w-sm shadow-md hover:shadow-lg break-inside-avoid cursor-pointer ${selected ? 'ring-3 ring-stone-300 ' : ''}`}
+      onClick={() => onClick(item.id)}
+      role={'button'}
+      tabIndex={0}
+    >
       <div className="w-full p-2 max-h-[320px] min-h-[180px] flex items-center justify-center overflow-hidden rounded">
         {image_id ? (
           <img

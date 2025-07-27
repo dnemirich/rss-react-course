@@ -1,10 +1,19 @@
+import { useNavigate, useParams } from 'react-router-dom';
+
+import { Details } from './components/Details/Details.tsx';
 import { Header } from './components/Header/Header.tsx';
 import { Loader } from './components/Loader/Loader.tsx';
 import { Main } from './components/Main/Main.tsx';
-import { Pagination } from './components/Pagination/Pagination.tsx';
 import { useArtworksSearch } from './hooks/useArtworksSearch.ts';
 
 export const App = () => {
+  const { detailsId, page = '1' } = useParams<{
+    detailsId?: string;
+    page?: string;
+  }>();
+
+  const navigate = useNavigate();
+
   const {
     currentPage,
     error,
@@ -19,6 +28,15 @@ export const App = () => {
 
   const handleChange = (value: string) => {
     setSearchTerm(value);
+  };
+
+  const handleDetails = (id: number) => {
+    console.log(id);
+    navigate(`/${page}/${id}`);
+  };
+
+  const handleCloseDetails = () => {
+    navigate(`/${page}`);
   };
 
   return (
@@ -39,14 +57,31 @@ export const App = () => {
         </p>
       )}
       {!isLoading && !error && (
-        <div className={'flex flex-col gap-10'}>
-          <Main data={results} />
-          {results.length > 0 && (
-            <Pagination
+        <div className="flex w-full items-start gap-4">
+          <div className="flex-1 relative">
+            <Main
               currentPage={currentPage}
+              data={results}
               onPageChange={goToPage}
+              onSelectedItem={handleDetails}
+              selectedId={detailsId || ''}
               totalPages={totalPages}
             />
+            {detailsId && (
+              <div
+                aria-label="Close details section"
+                className="fixed inset-0 left-0 z-40 cursor-pointer"
+                onClick={handleCloseDetails}
+                style={{
+                  right: 400,
+                }}
+              />
+            )}
+          </div>
+          {detailsId && (
+            <div className="z-50" style={{ width: 400 }}>
+              <Details id={detailsId} onClose={handleCloseDetails} />
+            </div>
           )}
         </div>
       )}

@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import './index.css';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { App } from './App.tsx';
 import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary.tsx';
@@ -18,7 +18,11 @@ createRoot(rootElement).render(
   <StrictMode>
     <BrowserRouter>
       <ErrorBoundary fallback={<Fallback />}>
-        <App />
+        <Routes>
+          <Route element={<App />} path="/" />
+          <Route element={<App />} path=":page" />
+          <Route element={<App />} path=":page/:detailsId" />
+        </Routes>
       </ErrorBoundary>
     </BrowserRouter>
   </StrictMode>

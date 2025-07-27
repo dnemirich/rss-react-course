@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import type { Artwork } from '../types/types.ts';
 
 import { fetchAllArtworks, searchArtworks } from '../api/artworks-api';
-import { fieldsListLong } from '../constants/items-constants.ts';
+import { fieldsListShort } from '../constants/items-constants.ts';
 import { LS_KEY, PAGE_SIZE } from '../constants/search-constants.ts';
 
 export const useArtworksSearch = () => {
@@ -16,7 +16,7 @@ export const useArtworksSearch = () => {
 
   const performSearch = useCallback(async (query: string, page: number) => {
     const params = {
-      fields: fieldsListLong.join(','),
+      fields: fieldsListShort.join(','),
       page,
       size: PAGE_SIZE,
     };
