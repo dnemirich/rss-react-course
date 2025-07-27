@@ -8,22 +8,17 @@ export const App = () => {
   const {
     currentPage,
     error,
+    goToPage,
     handleSearch,
     isLoading,
     results,
     searchTerm,
-    setCurrentPage,
     setSearchTerm,
     totalPages,
   } = useArtworksSearch();
 
   const handleChange = (value: string) => {
     setSearchTerm(value);
-    setCurrentPage(1);
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
   };
 
   return (
@@ -46,11 +41,13 @@ export const App = () => {
       {!isLoading && !error && (
         <div className={'flex flex-col gap-10'}>
           <Main data={results} />
-          <Pagination
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-            totalPages={totalPages}
-          />
+          {results.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              onPageChange={goToPage}
+              totalPages={totalPages}
+            />
+          )}
         </div>
       )}
     </div>

@@ -14,54 +14,58 @@ export const useArtworksSearch = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
 
-  const performSearch = useCallback(
-    async (query: string) => {
-      const params = {
-        fields: fieldsListLong.join(','),
-        page: currentPage,
-        size: PAGE_SIZE,
-      };
+  const performSearch = useCallback(async (query: string, page: number) => {
+    const params = {
+      fields: fieldsListLong.join(','),
+      page,
+      size: PAGE_SIZE,
+    };
 
-      setIsLoading(true);
-      setError(null);
-      try {
-        let data;
-        if (query) {
-          data = await searchArtworks({ ...params, q: query });
-        } else {
-          data = await fetchAllArtworks(params);
-        }
-        setResults(data?.data || []);
-        setTotalPages(data.pagination.total_pages);
-        setCurrentPage(data.pagination.current_page);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : String(err));
-      } finally {
-        setIsLoading(false);
+    setIsLoading(true);
+    setError(null);
+    try {
+      let data;
+      if (query) {
+        data = await searchArtworks({ ...params, q: query });
+      } else {
+        data = await fetchAllArtworks(params);
       }
-    },
-    [currentPage]
-  );
+      setResults(data?.data || []);
+      setTotalPages(data.pagination.total_pages);
+      setCurrentPage(data.pagination.current_page);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   const handleSearch = useCallback(() => {
     localStorage.setItem(LS_KEY, searchTerm.trim());
-    performSearch(searchTerm.trim());
+    performSearch(searchTerm.trim(), 1);
   }, [searchTerm, performSearch]);
 
   useEffect(() => {
     const stored = localStorage.getItem(LS_KEY) || '';
     setSearchTerm(stored);
-    performSearch(stored);
+    performSearch(stored, 1);
   }, [performSearch]);
+
+  const goToPage = useCallback(
+    (page: number) => {
+      performSearch(searchTerm.trim(), page);
+    },
+    [searchTerm, performSearch]
+  );
 
   return {
     currentPage,
     error,
+    goToPage,
     handleSearch,
     isLoading,
     results,
     searchTerm,
-    setCurrentPage,
     setSearchTerm,
     totalPages,
   };
