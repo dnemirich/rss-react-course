@@ -1,9 +1,8 @@
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
-
-import { Header } from '../../components/Header/Header.tsx';
-import { Loader } from '../../components/Loader/Loader.tsx';
-import { Main } from '../../components/Main/Main.tsx';
-import { useArtworksSearch } from '../../hooks/useArtworksSearch.ts';
+import { useArtworksSearch } from 'shared/hooks/useArtworksSearch.ts';
+import { Loader } from 'shared/ui/Loader';
+import { Header } from 'widgets/Header';
+import { Main } from 'widgets/Main';
 
 export const HomePage = () => {
   const { detailsId, page = '1' } = useParams<{

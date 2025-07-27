@@ -1,7 +1,6 @@
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import { NavLink } from 'react-router-dom';
-
-import { ROUTES } from '../../constants/routes.ts';
+import { ROUTES } from 'shared/constants/routes.ts';
 
 export const NotFoundPage = () => {
   return (

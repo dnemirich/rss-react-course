@@ -1,4 +1,4 @@
-import { Header } from '../../components/Header/Header.tsx';
+import { Header } from 'widgets/Header/Header.tsx';
 
 import logo from '/icons/rs_school.svg';
 import pic from '/images/IMG_9133.jpeg';
