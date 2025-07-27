@@ -11,7 +11,11 @@ type Props = {
 export const CardsList = ({ data, onSelectedItem, selectedId }: Props) => {
   if (data.length === 0) {
     return (
-      <h2 className={'text-2xl font-bold flex items-center min-h-80'}>
+      <h2
+        className={
+          'text-2xl font-bold  flex items-center justify-center min-h-80'
+        }
+      >
         No artworks matching your request were found
       </h2>
     );
