@@ -13,7 +13,7 @@ export const CardsList = ({ data, onSelectedItem, selectedId }: Props) => {
     return (
       <h2
         className={
-          'text-2xl font-bold  flex items-center justify-center min-h-80'
+          'text-2xl font-bold text-stone-500 flex items-center justify-center h-full min-h-140'
         }
       >
         No artworks matching your request were found

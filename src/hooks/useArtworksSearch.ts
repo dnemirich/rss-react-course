@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import type { Artwork } from '../types/types.ts';
 
@@ -11,8 +12,11 @@ export const useArtworksSearch = () => {
   const [results, setResults] = useState<Artwork[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<null | string>(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [lastQueried, setLastQueried] = useState<string>('');
+
+  const { page = '1' } = useParams<{ page?: string }>();
+  const currentPage = Number(page) || 1;
 
   const performSearch = useCallback(async (query: string, page: number) => {
     const params = {
@@ -32,7 +36,6 @@ export const useArtworksSearch = () => {
       }
       setResults(data?.data || []);
       setTotalPages(data.pagination.total_pages);
-      setCurrentPage(data.pagination.current_page);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
@@ -41,27 +44,31 @@ export const useArtworksSearch = () => {
   }, []);
 
   const handleSearch = useCallback(() => {
-    localStorage.setItem(LS_KEY, searchTerm.trim());
-    performSearch(searchTerm.trim(), 1);
+    const trimmed = searchTerm.trim();
+    localStorage.setItem(LS_KEY, trimmed);
+    setLastQueried(trimmed);
+    performSearch(trimmed, 1);
   }, [searchTerm, performSearch]);
 
+  // при монтировании
   useEffect(() => {
     const stored = localStorage.getItem(LS_KEY) || '';
     setSearchTerm(stored);
-    performSearch(stored, 1);
-  }, [performSearch]);
+    setLastQueried(stored);
+    performSearch(stored, currentPage);
+  }, []);
 
-  const goToPage = useCallback(
-    (page: number) => {
-      performSearch(searchTerm.trim(), page);
-    },
-    [searchTerm, performSearch]
-  );
+  useEffect(() => {
+    if (lastQueried !== '') {
+      performSearch(lastQueried, currentPage);
+    } else if (currentPage !== 1) {
+      performSearch('', currentPage);
+    }
+  }, [currentPage]);
 
   return {
     currentPage,
     error,
-    goToPage,
     handleSearch,
     isLoading,
     results,

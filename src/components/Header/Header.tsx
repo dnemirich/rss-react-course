@@ -16,7 +16,7 @@ export const Header = ({ onChange, onSearch, value }: Props) => {
     e.preventDefault();
     if (onSearch) onSearch();
   };
-  const showForm = onChange && value && onSearch;
+  const showForm = onChange && onSearch;
 
   const navigate = useNavigate();
 

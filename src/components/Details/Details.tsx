@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import type { Artwork } from '../../types/types.ts';
 
@@ -6,21 +7,23 @@ import { fetchArtworkById } from '../../api/artworks-api';
 import { fieldsListLong } from '../../constants/items-constants.ts';
 import { Loader } from '../Loader/Loader.tsx';
 
-type Props = {
-  id: string;
-  onClose: () => void;
-};
-
-export const Details = ({ id, onClose }: Props) => {
+export const Details = () => {
   const [artwork, setArtwork] = useState<Artwork | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null | string>(null);
+
+  const navigate = useNavigate();
+
+  const { detailsId = '', page = '1' } = useParams<{
+    detailsId?: string;
+    page?: string;
+  }>();
 
   useEffect(() => {
     let ignore = false;
     setLoading(true);
     setError(null);
-    fetchArtworkById(id, fieldsListLong.join(','))
+    fetchArtworkById(detailsId, fieldsListLong.join(','))
       .then((data) => {
         if (!ignore) setArtwork(data.data);
       })
@@ -33,9 +36,13 @@ export const Details = ({ id, onClose }: Props) => {
     return () => {
       ignore = true;
     };
-  }, [id]);
+  }, [detailsId]);
 
   if (!artwork) return null;
+
+  const onClose = () => {
+    navigate(`/${page}`);
+  };
 
   return (
     <div className="w-[360px] h-full bg-white border-l border-stone-300 p-8 relative">

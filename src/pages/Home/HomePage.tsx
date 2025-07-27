@@ -1,6 +1,5 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 
-import { Details } from '../../components/Details/Details.tsx';
 import { Header } from '../../components/Header/Header.tsx';
 import { Loader } from '../../components/Loader/Loader.tsx';
 import { Main } from '../../components/Main/Main.tsx';
@@ -17,7 +16,6 @@ export const HomePage = () => {
   const {
     currentPage,
     error,
-    goToPage,
     handleSearch,
     isLoading,
     results,
@@ -31,7 +29,6 @@ export const HomePage = () => {
   };
 
   const handleDetails = (id: number) => {
-    console.log(id);
     navigate(`/${page}/${id}`);
   };
 
@@ -39,11 +36,20 @@ export const HomePage = () => {
     navigate(`/${page}`);
   };
 
+  const handlePageChange = (page: number) => {
+    navigate(`/${page}`);
+  };
+
+  const handleSearchSubmit = () => {
+    navigate('/1');
+    handleSearch();
+  };
+
   return (
     <>
       <Header
         onChange={handleChange}
-        onSearch={handleSearch}
+        onSearch={handleSearchSubmit}
         value={searchTerm}
       />
       {isLoading && <Loader />}
@@ -62,7 +68,7 @@ export const HomePage = () => {
             <Main
               currentPage={currentPage}
               data={results}
-              onPageChange={goToPage}
+              onPageChange={handlePageChange}
               onSelectedItem={handleDetails}
               selectedId={detailsId || ''}
               totalPages={totalPages}
@@ -80,7 +86,7 @@ export const HomePage = () => {
           </div>
           {detailsId && (
             <div className="z-50" style={{ width: 400 }}>
-              <Details id={detailsId} onClose={handleCloseDetails} />
+              <Outlet />
             </div>
           )}
         </div>

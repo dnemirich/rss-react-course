@@ -13,7 +13,7 @@ export const Card = ({ item, onClick, selectedId }: Props) => {
   const selected = id === Number(selectedId);
   return (
     <li
-      className={`bg-stone-50 rounded min-w-0 w-full flex flex-col max-w-sm shadow-md hover:shadow-lg break-inside-avoid cursor-pointer ${selected ? 'ring-3 ring-stone-300 ' : ''}`}
+      className={`bg-stone-50 rounded min-w-0 w-full flex flex-col max-w-sm shadow-md hover:shadow-lg break-inside-avoid cursor-pointer ${selected ? 'ring-4 ring-stone-400 ' : ''}`}
       onClick={() => onClick(item.id)}
       role={'button'}
       tabIndex={0}
