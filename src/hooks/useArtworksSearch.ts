@@ -12,7 +12,7 @@ export const useArtworksSearch = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<null | string>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<null | number>(null);
+  const [totalPages, setTotalPages] = useState<number>(1);
 
   const performSearch = useCallback(
     async (query: string) => {
@@ -55,6 +55,7 @@ export const useArtworksSearch = () => {
   }, [performSearch]);
 
   return {
+    currentPage,
     error,
     handleSearch,
     isLoading,
