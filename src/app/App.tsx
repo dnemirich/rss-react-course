@@ -5,11 +5,11 @@ import { Route, Routes } from 'react-router-dom';
 import { ROUTES } from 'shared/constants/routes.ts';
 import { Details } from 'widgets/Details/Details.tsx';
 
-import Layout from './layouts/MainLayout/Layout.tsx';
+import { MainLayout } from './layouts/MainLayout/MainLayout.tsx';
 
 const App = () => {
   return (
-    <Layout>
+    <MainLayout>
       <Routes>
         <Route element={<HomePage />} path="/">
           <Route element={null} index />
@@ -19,7 +19,7 @@ const App = () => {
         <Route element={<AboutPage />} path={ROUTES.ABOUT} />
         <Route element={<NotFoundPage />} path={'*'} />
       </Routes>
-    </Layout>
+    </MainLayout>
   );
 };
 

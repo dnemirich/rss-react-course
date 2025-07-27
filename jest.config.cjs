@@ -10,7 +10,8 @@ module.exports = {
     '^pages/(.*)$': '<rootDir>/src/pages/$1',
     '^shared/(.*)$': '<rootDir>/src/shared/$1',
     '^widgets/(.*)$': '<rootDir>/src/widgets/$1',
-    '\\.(css|less|scss|sass|svg|png|jpg)$': 'identity-obj-proxy',
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+    '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/__mocks__/fileMock.js'
   },
   transform: {
     '^.+\\.tsx?$': ['ts-jest', { tsconfig: 'tsconfig.jest.json' }],
@@ -19,7 +20,7 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/**/*.d.ts',
-    '!src/index.{js,jsx,ts,tsx}',
+    '!src/**/index.{js,jsx,ts,tsx}',
     '!src/setupTests.{js,ts}',
     '!src/**/*.test.{js,jsx,ts,tsx}',
     '!src/**/*.spec.{js,jsx,ts,tsx}',
