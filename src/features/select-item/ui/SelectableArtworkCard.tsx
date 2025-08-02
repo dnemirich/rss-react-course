@@ -24,7 +24,7 @@ export const SelectableArtworkCard = ({ item, onClick, selectedId }: Props) => {
           <input
             aria-label={`Select artwork ${item.title}`}
             checked={selected}
-            className={'w-5 h-5 accent-lime-600'}
+            className={'w-5 h-5 accent-lime-600 rounded-md'}
             onChange={handleCheckbox}
             type="checkbox"
           />

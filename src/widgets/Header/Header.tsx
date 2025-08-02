@@ -1,6 +1,7 @@
 import { PaintBrushIcon } from '@heroicons/react/24/outline';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ROUTES } from 'shared/constants/routes';
+import { ThemeToggler } from 'shared/theme';
 import { Button } from 'shared/ui/Button';
 import { Input } from 'shared/ui/Input';
 
@@ -20,7 +21,7 @@ export const Header = ({ onChange, onSearch, value }: Props) => {
   const navigate = useNavigate();
 
   return (
-    <header className={'bg-stone-100 p-6 shadow-md w-screen'}>
+    <header className={'bg-stone-100 dark:bg-stone-900 p-6 shadow-md w-screen'}>
       <div className="max-w-6xl mx-auto px-4">
         <div className={'flex items-center justify-between'}>
           <PaintBrushIcon
@@ -34,16 +35,19 @@ export const Header = ({ onChange, onSearch, value }: Props) => {
               ABOUT
             </span>
           </NavLink>
-          {showForm && (
-            <form
-              className={'flex justify-center items-center gap-3.5'}
-              onSubmit={handleSubmit}
-              role={'form'}
-            >
-              <Input onChangeHandler={onChange} value={value} />
-              <Button title={'Search'} type={'submit'} />
-            </form>
-          )}
+          <div className={'flex gap-5 items-center'}>
+            {showForm && (
+              <form
+                className={'flex justify-center items-center gap-3.5'}
+                onSubmit={handleSubmit}
+                role={'form'}
+              >
+                <Input onChangeHandler={onChange} value={value} />
+                <Button title={'Search'} type={'submit'} />
+              </form>
+            )}
+            <ThemeToggler />
+          </div>
         </div>
       </div>
     </header>

@@ -42,7 +42,7 @@ export const Details = () => {
   };
 
   return (
-    <div className="w-[360px] h-full bg-white border-l border-stone-300 p-8 relative">
+    <div className="w-[360px] h-full bg-stone-50 dark:bg-stone-600 border-l border-stone-300 p-8 relative">
       <button className="mb-4 cursor-pointer" onClick={onClose}>
         Close
       </button>
@@ -76,7 +76,9 @@ export const Details = () => {
             <div className={'flex gap-1 flex-wrap'}>
               {artwork.category_titles.map((item, index) => (
                 <span
-                  className={'rounded-sm bg-stone-300 p-1 text-sm'}
+                  className={
+                    'rounded-sm bg-stone-300 dark:bg-stone-400 p-1 text-sm'
+                  }
                   key={index}
                 >
                   {item}

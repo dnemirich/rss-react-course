@@ -4,6 +4,7 @@ import 'shared/styles/index.css';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { store } from 'shared/lib/store.ts';
+import { ThemeProvider } from 'shared/theme';
 import { ErrorBoundary } from 'shared/ui/ErrorBoundary';
 import { Fallback } from 'shared/ui/Fallback';
 
@@ -18,11 +19,13 @@ if (!rootElement) {
 createRoot(rootElement).render(
   <StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <ErrorBoundary fallback={<Fallback />}>
-          <App />
-        </ErrorBoundary>
-      </BrowserRouter>
+      <ThemeProvider>
+        <BrowserRouter>
+          <ErrorBoundary fallback={<Fallback />}>
+            <App />
+          </ErrorBoundary>
+        </BrowserRouter>
+      </ThemeProvider>
     </Provider>
   </StrictMode>
 );
