@@ -1,5 +1,5 @@
-import { useAppDispatch, useAppSelector } from 'app/hooks.ts';
 import { type Artwork, ArtworkCard } from 'entities/artwork';
+import { useAppDispatch, useAppSelector } from 'shared/lib/hooks.ts';
 
 import { isSelected, toggleSelection } from '../model';
 
@@ -14,7 +14,7 @@ export const SelectableArtworkCard = ({ item, onClick, selectedId }: Props) => {
   const dispatch = useAppDispatch();
 
   const handleCheckbox = () => {
-    dispatch(toggleSelection({ selectedId: item.id }));
+    dispatch(toggleSelection({ selectedItem: item }));
   };
 
   return (

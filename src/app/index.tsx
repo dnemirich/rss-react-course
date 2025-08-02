@@ -1,9 +1,9 @@
-import { store } from 'app/store.ts';
 import { StrictMode } from 'react';
-import 'shared/styles/index.css';
 import { createRoot } from 'react-dom/client';
+import 'shared/styles/index.css';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import { store } from 'shared/lib/store.ts';
 import { ErrorBoundary } from 'shared/ui/ErrorBoundary';
 import { Fallback } from 'shared/ui/Fallback';
 
