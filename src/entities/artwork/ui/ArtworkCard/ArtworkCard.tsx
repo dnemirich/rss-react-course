@@ -18,7 +18,7 @@ export const ArtworkCard = ({ item, onClick, selectedId }: Props) => {
       role={'button'}
       tabIndex={0}
     >
-      <div className="w-full p-2 max-h-[320px] min-h-[180px] flex items-center justify-center overflow-hidden rounded">
+      <div className="w-full p-8 max-h-[320px] min-h-[180px] flex items-center justify-center overflow-hidden rounded">
         {image_id ? (
           <img
             alt={title}

@@ -1,4 +1,5 @@
-import { type Artwork, ArtworkCard } from 'entities/artwork';
+import { type Artwork } from 'entities/artwork';
+import { SelectableArtworkCard } from 'features/select-item';
 
 type Props = {
   data: Artwork[];
@@ -28,7 +29,7 @@ export const CardsList = ({ data, onSelectedItem, selectedId }: Props) => {
       style={{ gridTemplateRows: 'masonry' }}
     >
       {data.map((item, index) => (
-        <ArtworkCard
+        <SelectableArtworkCard
           item={item}
           key={index}
           onClick={onSelectedItem}

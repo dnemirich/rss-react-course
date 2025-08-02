@@ -1,6 +1,8 @@
+import { store } from 'app/store.ts';
 import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
 import 'shared/styles/index.css';
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { ErrorBoundary } from 'shared/ui/ErrorBoundary';
 import { Fallback } from 'shared/ui/Fallback';
@@ -15,10 +17,12 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    <BrowserRouter>
-      <ErrorBoundary fallback={<Fallback />}>
-        <App />
-      </ErrorBoundary>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <ErrorBoundary fallback={<Fallback />}>
+          <App />
+        </ErrorBoundary>
+      </BrowserRouter>
+    </Provider>
   </StrictMode>
 );
