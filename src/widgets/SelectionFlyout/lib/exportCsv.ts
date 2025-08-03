@@ -1,10 +1,26 @@
-import type { Artwork } from 'entities/artwork';
-
+import { type Artwork, fetchArtworkById } from 'entities/artwork';
 import { saveAs } from 'file-saver';
 import { unparse } from 'papaparse';
+import { fieldsListLong } from 'shared/constants/items-constants.ts';
 
-export const exportCsv = (items: Artwork[]) => {
-  const csv = unparse(items, {
+const fetchMoreInfo = async (items: Artwork[]) => {
+  const params = fieldsListLong.join(',');
+  const promises = items.map((item) =>
+    fetchArtworkById(String(item.id), params)
+      .then((data) => data.data)
+      .catch(() => null)
+  );
+
+  const result = await Promise.all(promises);
+
+  console.log(result);
+  return result;
+};
+
+export const exportCsv = async (items: Artwork[]) => {
+  const moreInfo = await fetchMoreInfo(items);
+
+  const csv = unparse(moreInfo, {
     delimiter: ',',
     header: true,
     newline: '\r\n',
