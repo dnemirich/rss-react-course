@@ -11,10 +11,7 @@ const fetchMoreInfo = async (items: Artwork[]) => {
       .catch(() => null)
   );
 
-  const result = await Promise.all(promises);
-
-  console.log(result);
-  return result;
+  return await Promise.all(promises);
 };
 
 export const exportCsv = async (items: Artwork[]) => {

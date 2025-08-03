@@ -27,6 +27,7 @@ export const Pagination = ({
   return (
     <div className={'flex items-center gap-2 self-end'}>
       <button
+        aria-label="Previous page"
         className={
           'w-10 h-10 flex justify-center items-center cursor-pointer hover:shadow-md active:bg-stone-300 transition-colors disabled:opacity-50'
         }
@@ -39,6 +40,7 @@ export const Pagination = ({
       <span>/</span>
       <span className={'text-lg'}>{totalPages}</span>
       <button
+        aria-label="Next page"
         className={
           'w-10 h-10 flex justify-center items-center cursor-pointer hover:shadow-md active:bg-stone-300 transition-colors disabled:opacity-50'
         }
