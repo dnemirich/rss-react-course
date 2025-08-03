@@ -4,21 +4,17 @@ import {
   searchArtworks,
 } from 'entities/artwork';
 import { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 
 import { fieldsListShort } from '../constants/items-constants.ts';
 import { LS_KEY, PAGE_SIZE } from '../constants/search-constants.ts';
 
-export const useArtworksSearch = () => {
+export const useArtworksSearch = ({ page }: { page: number }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [results, setResults] = useState<Artwork[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<null | string>(null);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [lastQueried, setLastQueried] = useState<string>('');
-
-  const { page = '1' } = useParams<{ page?: string }>();
-  const currentPage = Number(page) || 1;
 
   const performSearch = useCallback(async (query: string, page: number) => {
     const params = {
@@ -57,19 +53,19 @@ export const useArtworksSearch = () => {
     const stored = localStorage.getItem(LS_KEY) || '';
     setSearchTerm(stored);
     setLastQueried(stored);
-    performSearch(stored, currentPage);
-  }, []);
+    performSearch(stored, page);
+  }, [page, performSearch]);
 
   useEffect(() => {
     if (lastQueried !== '') {
-      performSearch(lastQueried, currentPage);
-    } else if (currentPage !== 1) {
-      performSearch('', currentPage);
+      performSearch(lastQueried, page);
+    } else if (page !== 1) {
+      performSearch('', page);
     }
-  }, [currentPage]);
+  }, [page, performSearch, lastQueried]);
 
   return {
-    currentPage,
+    currentPage: page,
     error,
     handleSearch,
     isLoading,

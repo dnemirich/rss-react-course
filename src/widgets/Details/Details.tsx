@@ -1,6 +1,6 @@
 import { type Artwork, fetchArtworkById } from 'entities/artwork';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { fieldsListLong } from 'shared/constants/items-constants.ts';
 import { Loader } from 'shared/ui/Loader';
 
@@ -8,15 +8,14 @@ export const Details = () => {
   const [artwork, setArtwork] = useState<Artwork | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null | string>(null);
-
-  const navigate = useNavigate();
-
-  const { detailsId = '', page = '1' } = useParams<{
-    detailsId?: string;
-    page?: string;
-  }>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const detailsId = searchParams.get('details') || '';
 
   useEffect(() => {
+    if (!detailsId) {
+      return;
+    }
+
     let ignore = false;
     setLoading(true);
     setError(null);
@@ -38,7 +37,8 @@ export const Details = () => {
   if (!artwork) return null;
 
   const onClose = () => {
-    navigate(`/${page}`);
+    searchParams.delete('details');
+    setSearchParams(searchParams);
   };
 
   return (

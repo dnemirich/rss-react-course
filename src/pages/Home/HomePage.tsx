@@ -1,19 +1,17 @@
 import { clearSelection, getSelectedItems } from 'features/select-item';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useArtworksSearch } from 'shared/hooks/useArtworksSearch.ts';
 import { useAppDispatch, useAppSelector } from 'shared/lib/hooks.ts';
 import { Loader } from 'shared/ui/Loader';
+import { Details } from 'widgets/Details';
 import { Header } from 'widgets/Header';
 import { Main } from 'widgets/Main';
 import { SelectionFlyout } from 'widgets/SelectionFlyout';
 
 export const HomePage = () => {
-  const { detailsId, page = '1' } = useParams<{
-    detailsId?: string;
-    page?: string;
-  }>();
-
-  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pageParam = Number(searchParams.get('page') || '1');
+  const detailsId = searchParams.get('details') || '';
 
   const selectedItems = useAppSelector((state) => getSelectedItems(state));
 
@@ -29,22 +27,25 @@ export const HomePage = () => {
     searchTerm,
     setSearchTerm,
     totalPages,
-  } = useArtworksSearch();
+  } = useArtworksSearch({ page: pageParam });
 
   const handleChange = (value: string) => {
     setSearchTerm(value);
   };
 
   const handleDetails = (id: number) => {
-    navigate(`/${page}/${id}`);
+    searchParams.set('details', String(id));
+    setSearchParams(searchParams);
   };
 
-  const handlePageChange = (page: number) => {
-    navigate(`/${page}`);
+  const handlePageChange = (newPage: number) => {
+    searchParams.set('page', String(newPage));
+    setSearchParams(searchParams);
   };
 
   const handleSearchSubmit = () => {
-    navigate('/1');
+    searchParams.set('page', '1');
+    setSearchParams(searchParams);
     handleSearch();
   };
 
@@ -83,7 +84,7 @@ export const HomePage = () => {
           </div>
           {detailsId && (
             <div className="z-50" style={{ width: 400 }}>
-              <Outlet />
+              <Details />
             </div>
           )}
         </div>
