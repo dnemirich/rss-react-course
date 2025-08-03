@@ -1,16 +1,22 @@
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { clearSelection, getSelectedItems } from 'features/select-item';
+import { useSearchParams } from 'react-router-dom';
 import { useArtworksSearch } from 'shared/hooks/useArtworksSearch.ts';
+import { useAppDispatch, useAppSelector } from 'shared/lib/hooks.ts';
 import { Loader } from 'shared/ui/Loader';
+import { Details } from 'widgets/Details';
 import { Header } from 'widgets/Header';
 import { Main } from 'widgets/Main';
+import { SelectionFlyout } from 'widgets/SelectionFlyout';
 
 export const HomePage = () => {
-  const { detailsId, page = '1' } = useParams<{
-    detailsId?: string;
-    page?: string;
-  }>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pageParam = Number(searchParams.get('page') || '1');
+  const detailsId = searchParams.get('details') || '';
 
-  const navigate = useNavigate();
+  const selectedItems = useAppSelector((state) => getSelectedItems(state));
+
+  const selectedItemsLength = selectedItems.length;
+  const dispatch = useAppDispatch();
 
   const {
     currentPage,
@@ -21,27 +27,30 @@ export const HomePage = () => {
     searchTerm,
     setSearchTerm,
     totalPages,
-  } = useArtworksSearch();
+  } = useArtworksSearch({ page: pageParam });
 
   const handleChange = (value: string) => {
     setSearchTerm(value);
   };
 
   const handleDetails = (id: number) => {
-    navigate(`/${page}/${id}`);
+    searchParams.set('details', String(id));
+    setSearchParams(searchParams);
   };
 
-  const handleCloseDetails = () => {
-    navigate(`/${page}`);
-  };
-
-  const handlePageChange = (page: number) => {
-    navigate(`/${page}`);
+  const handlePageChange = (newPage: number) => {
+    searchParams.set('page', String(newPage));
+    setSearchParams(searchParams);
   };
 
   const handleSearchSubmit = () => {
-    navigate('/1');
+    searchParams.set('page', '1');
+    setSearchParams(searchParams);
     handleSearch();
+  };
+
+  const handleClear = () => {
+    dispatch(clearSelection());
   };
 
   return (
@@ -63,7 +72,7 @@ export const HomePage = () => {
       )}
       {!isLoading && !error && (
         <div className="flex w-full items-start gap-4">
-          <div className="flex-1 relative pb-5">
+          <div className="flex-1 relative pb-20">
             <Main
               currentPage={currentPage}
               data={results}
@@ -72,23 +81,16 @@ export const HomePage = () => {
               selectedId={detailsId || ''}
               totalPages={totalPages}
             />
-            {detailsId && (
-              <div
-                aria-label="Close details section"
-                className="fixed inset-0 left-0 z-40 cursor-pointer"
-                onClick={handleCloseDetails}
-                style={{
-                  right: 400,
-                }}
-              />
-            )}
           </div>
           {detailsId && (
             <div className="z-50" style={{ width: 400 }}>
-              <Outlet />
+              <Details />
             </div>
           )}
         </div>
+      )}
+      {selectedItemsLength > 0 && (
+        <SelectionFlyout onClear={handleClear} selectedItems={selectedItems} />
       )}
     </>
   );

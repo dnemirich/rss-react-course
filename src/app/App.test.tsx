@@ -1,25 +1,27 @@
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { Outlet } from 'react-router-dom';
+import { MemoryRouter, useSearchParams } from 'react-router-dom';
 
 import App from './App';
 
-jest.mock('pages/Home/HomePage.tsx', () => ({
-  HomePage: () => (
-    <div>
-      Home page
-      <Outlet />
-    </div>
-  ),
-}));
+jest.mock('pages/Home/HomePage.tsx', () => {
+  return {
+    HomePage: () => {
+      const [searchParams] = useSearchParams();
+      const details = searchParams.get('details');
+      return (
+        <div>
+          Home page
+          {details && <div>Details Page</div>}
+        </div>
+      );
+    },
+  };
+});
 jest.mock('pages/About/AboutPage', () => ({
   AboutPage: () => <div>About page</div>,
 }));
 jest.mock('pages/NotFound/NotFoundPage.tsx', () => ({
   NotFoundPage: () => <div>Not Found</div>,
-}));
-jest.mock('widgets/Details/Details.tsx', () => ({
-  Details: () => <div>Details Page</div>,
 }));
 
 describe('App routing', () => {
@@ -50,12 +52,13 @@ describe('App routing', () => {
     expect(screen.getByText('Not Found')).toBeInTheDocument();
   });
 
-  it('renders Details for details route', () => {
+  it('renders Details when details query param is present', () => {
     render(
-      <MemoryRouter initialEntries={['/1/42']}>
+      <MemoryRouter initialEntries={['/?page=1&details=42']}>
         <App />
       </MemoryRouter>
     );
+    expect(screen.getByText('Home page')).toBeInTheDocument();
     expect(screen.getByText('Details Page')).toBeInTheDocument();
   });
 });

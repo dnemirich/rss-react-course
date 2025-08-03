@@ -6,8 +6,10 @@ import {
   waitFor,
 } from '@testing-library/react';
 import * as api from 'entities/artwork/model/artworks-api.ts';
+import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { LS_KEY } from 'shared/constants/search-constants.ts';
+import { store } from 'shared/lib/store.ts';
 
 import { HomePage } from './HomePage.tsx';
 
@@ -23,9 +25,11 @@ beforeEach(() => {
 describe('App (localStorage integration)', () => {
   it('search value should be added to ls on search', async () => {
     render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      </Provider>
     );
     const input = screen.getByRole('textbox');
     await act(async () => {
@@ -40,9 +44,11 @@ describe('App (localStorage integration)', () => {
   it('ls value should be renewed when the search is fired', async () => {
     localStorage.setItem(LS_KEY, 'old');
     render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      </Provider>
     );
     const input = screen.getByRole('textbox');
     await act(async () => {
@@ -58,9 +64,11 @@ describe('App (localStorage integration)', () => {
     localStorage.setItem(LS_KEY, 'value from storage');
     await act(async () => {
       render(
-        <MemoryRouter>
-          <HomePage />
-        </MemoryRouter>
+        <Provider store={store}>
+          <MemoryRouter>
+            <HomePage />
+          </MemoryRouter>
+        </Provider>
       );
     });
     expect(screen.getByRole('textbox')).toHaveValue('value from storage');
@@ -69,9 +77,11 @@ describe('App (localStorage integration)', () => {
   it('input should be empty when ls value is omit', async () => {
     await act(async () => {
       render(
-        <MemoryRouter>
-          <HomePage />
-        </MemoryRouter>
+        <Provider store={store}>
+          <MemoryRouter>
+            <HomePage />
+          </MemoryRouter>
+        </Provider>
       );
     });
     expect(screen.getByRole('textbox')).toHaveValue('');
@@ -79,9 +89,11 @@ describe('App (localStorage integration)', () => {
 
   it('trailing spaces should be trimmed ', async () => {
     render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      </Provider>
     );
     const input = screen.getByRole('textbox');
     await act(async () => {
@@ -95,9 +107,11 @@ describe('App (localStorage integration)', () => {
 
   it('spaces within the text should remain intact', async () => {
     render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      </Provider>
     );
     const input = screen.getByRole('textbox');
     await act(async () => {
@@ -111,9 +125,11 @@ describe('App (localStorage integration)', () => {
 
   it('state should renew when value is changed', async () => {
     render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      </Provider>
     );
     const input = screen.getByRole('textbox');
     await act(async () => {
@@ -134,9 +150,11 @@ describe('App UI/async scenarios', () => {
       () => new Promise(() => {})
     );
     render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      </Provider>
     );
     expect(screen.getByRole('status')).toBeInTheDocument();
   });
@@ -146,9 +164,11 @@ describe('App UI/async scenarios', () => {
       new Error('Network error')
     );
     render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      </Provider>
     );
     await waitFor(() =>
       expect(screen.getByText('Network error')).toBeInTheDocument()
@@ -160,9 +180,11 @@ describe('App UI/async scenarios', () => {
       'Custom error as string'
     );
     render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      </Provider>
     );
     await waitFor(() => {
       expect(screen.getByText('Custom error as string')).toBeInTheDocument();

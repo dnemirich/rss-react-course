@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { fetchArtworkById } from 'entities/artwork';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { mockArtworkData } from 'shared/utils/test-utils/mock-data.ts';
 
 import { Details } from './Details';
@@ -17,11 +17,10 @@ describe('Details component', () => {
     detailsId = mockArtwork.id.toString(),
     page = '1'
   ) => {
+    const entry = `/?page=${page}&details=${detailsId}`;
     render(
-      <MemoryRouter initialEntries={[`/details/${detailsId}/${page}`]}>
-        <Routes>
-          <Route element={<Details />} path="/details/:detailsId/:page" />
-        </Routes>
+      <MemoryRouter initialEntries={[entry]}>
+        <Details />
       </MemoryRouter>
     );
   };

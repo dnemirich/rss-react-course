@@ -12,7 +12,7 @@ export const Input = ({ onChangeHandler, ...rest }: Props) => {
   return (
     <input
       className={
-        'bg-stone-50 text-stone-900 border-none p-2 outline-stone-500 max-w-sm w-full shadow-md'
+        'bg-stone-50 dark:bg-stone-600 text-stone-900 dark:text-stone-50 border-none p-2 outline-stone-500 max-w-sm w-full shadow-md'
       }
       onChange={handleOnChange}
       placeholder={''}

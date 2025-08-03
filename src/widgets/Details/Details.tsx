@@ -1,6 +1,6 @@
 import { type Artwork, fetchArtworkById } from 'entities/artwork';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { fieldsListLong } from 'shared/constants/items-constants.ts';
 import { Loader } from 'shared/ui/Loader';
 
@@ -8,15 +8,14 @@ export const Details = () => {
   const [artwork, setArtwork] = useState<Artwork | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null | string>(null);
-
-  const navigate = useNavigate();
-
-  const { detailsId = '', page = '1' } = useParams<{
-    detailsId?: string;
-    page?: string;
-  }>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const detailsId = searchParams.get('details') || '';
 
   useEffect(() => {
+    if (!detailsId) {
+      return;
+    }
+
     let ignore = false;
     setLoading(true);
     setError(null);
@@ -38,11 +37,12 @@ export const Details = () => {
   if (!artwork) return null;
 
   const onClose = () => {
-    navigate(`/${page}`);
+    searchParams.delete('details');
+    setSearchParams(searchParams);
   };
 
   return (
-    <div className="w-[360px] h-full bg-white border-l border-stone-300 p-8 relative">
+    <div className="w-[360px] h-full bg-stone-50 dark:bg-stone-600 border-l border-stone-300 p-8 relative">
       <button className="mb-4 cursor-pointer" onClick={onClose}>
         Close
       </button>
@@ -76,7 +76,9 @@ export const Details = () => {
             <div className={'flex gap-1 flex-wrap'}>
               {artwork.category_titles.map((item, index) => (
                 <span
-                  className={'rounded-sm bg-stone-300 p-1 text-sm'}
+                  className={
+                    'rounded-sm bg-stone-300 dark:bg-stone-400 p-1 text-sm'
+                  }
                   key={index}
                 >
                   {item}
