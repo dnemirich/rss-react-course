@@ -3,6 +3,7 @@ import { useFetchArtworkByIdQuery } from 'entities/artwork';
 import { useSearchParams } from 'react-router-dom';
 import { fieldsListLong } from 'shared/constants/items-constants.ts';
 import { Loader } from 'shared/ui/Loader';
+import { handleError } from 'shared/utils/handleError.ts';
 
 export const Details = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -36,7 +37,7 @@ export const Details = () => {
         </button>
       </div>
       {(isLoading || isFetching) && <Loader />}
-      {error && <div className="min-w-[360px] p-8">{String(error)}</div>}
+      {error && <div className="min-w-[360px] p-8">{handleError(error)}</div>}
       {!isFetching && !isLoading && !error && artwork && (
         <div>
           <div className={'absolute top-2 right-2 text-lime-600 text-md'}>

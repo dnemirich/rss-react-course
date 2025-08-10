@@ -48,6 +48,7 @@ export const Header = ({ onChange, onRefetch, onSearch, value }: Props) => {
               </form>
             )}
             <ArrowPathIcon
+              aria-label="refresh"
               className={`cursor-pointer hover:text-lime-600 transition-colors text-stone-700 dark:text-stone-300 } '}`}
               height={34}
               onClick={onRefetch}

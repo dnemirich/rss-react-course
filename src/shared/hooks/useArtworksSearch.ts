@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { fieldsListShort } from '../constants/items-constants.ts';
 import { LS_KEY, PAGE_SIZE } from '../constants/search-constants.ts';
+import { handleError } from '../utils/handleError.ts';
 
 export const useArtworksSearch = ({ page }: { page: number }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -36,7 +37,7 @@ export const useArtworksSearch = ({ page }: { page: number }) => {
   );
 
   const data = lastQueried ? searchData : allData;
-  const error = lastQueried ? searchError : allError;
+  const error = lastQueried ? handleError(searchError) : handleError(allError);
   const isLoading = lastQueried ? searchLoading : allLoading;
 
   const results = data?.data || [];

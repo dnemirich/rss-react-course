@@ -70,7 +70,7 @@ export const HomePage = () => {
             'text-red-500 font-bold text-2xl flex items-center min-h-80'
           }
         >
-          {String(error)}
+          {error}
         </p>
       )}
       {!isFetching && !isLoading && !error && (

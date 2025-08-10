@@ -1,5 +1,5 @@
 // import { fieldsListLong } from 'shared/constants/items-constants.ts';
-// import { api } from 'shared/lib/base-api.ts';
+// import { baseApi } from 'shared/lib/base-api.ts';
 // import {
 //   mockDetailedArtworkData,
 //   mockGeneralResponse,
@@ -9,12 +9,19 @@
 // } from 'shared/utils/test-utils/mock-data.ts';
 //
 // import {
+//   useFetchAllArtworksQuery,
+//   useFetchArtworkByIdQuery,
+//   useSearchArtworksQuery,
+// } from './artworks-api.ts';
+
+// import {
 //   fetchAllArtworks,
 //   fetchArtworkById,
 //   searchArtworks,
 // } from './artworks-api.ts';
 //
 // const fields = fieldsListLong.join(',');
+
 // describe('fetch artworks', () => {
 //   afterEach(() => {
 //     jest.restoreAllMocks();
