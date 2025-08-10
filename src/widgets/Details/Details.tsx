@@ -1,3 +1,4 @@
+import { ArrowPathIcon } from '@heroicons/react/20/solid';
 import { useFetchArtworkByIdQuery } from 'entities/artwork';
 import { useSearchParams } from 'react-router-dom';
 import { fieldsListLong } from 'shared/constants/items-constants.ts';
@@ -7,10 +8,11 @@ export const Details = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const detailsId = searchParams.get('details') || '';
 
-  const { data, error, isLoading } = useFetchArtworkByIdQuery({
-    fields: fieldsListLong.join(','),
-    id: detailsId,
-  });
+  const { data, error, isFetching, isLoading, refetch } =
+    useFetchArtworkByIdQuery({
+      fields: fieldsListLong.join(','),
+      id: detailsId,
+    });
 
   const artwork = data?.data;
 
@@ -21,12 +23,21 @@ export const Details = () => {
 
   return (
     <div className="w-[360px] h-full bg-stone-50 dark:bg-stone-600 border-l border-stone-300 p-8 relative">
-      <button className="mb-4 cursor-pointer" onClick={onClose}>
-        Close
-      </button>
-      {isLoading && <Loader />}
+      <div className="flex justify-between items-center">
+        <button className="mb-4 cursor-pointer" onClick={onClose}>
+          Close
+        </button>
+        <button className="mb-4" disabled={isFetching} onClick={refetch}>
+          <ArrowPathIcon
+            className={'hover:text-lime-600 transition-colors'}
+            height={20}
+            width={20}
+          />
+        </button>
+      </div>
+      {(isLoading || isFetching) && <Loader />}
       {error && <div className="min-w-[360px] p-8">{String(error)}</div>}
-      {!isLoading && !error && artwork && (
+      {!isFetching && !isLoading && !error && artwork && (
         <div>
           <div className={'absolute top-2 right-2 text-lime-600 text-md'}>
             {artwork.artwork_type_title}

@@ -27,7 +27,9 @@ export const useArtworksSearch = ({ page }: { page: number }) => {
   const {
     data: searchData,
     error: searchError,
+    isFetching,
     isLoading: searchLoading,
+    refetch,
   } = useSearchArtworksQuery(
     { ...params, q: lastQueried },
     { skip: !lastQueried }
@@ -56,7 +58,9 @@ export const useArtworksSearch = ({ page }: { page: number }) => {
     currentPage: page,
     error,
     handleSearch,
+    isFetching,
     isLoading,
+    refetch,
     results,
     searchTerm,
     setSearchTerm,

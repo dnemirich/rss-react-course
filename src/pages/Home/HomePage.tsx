@@ -22,7 +22,9 @@ export const HomePage = () => {
     currentPage,
     error,
     handleSearch,
+    isFetching,
     isLoading,
+    refetch,
     results,
     searchTerm,
     setSearchTerm,
@@ -57,20 +59,21 @@ export const HomePage = () => {
     <>
       <Header
         onChange={handleChange}
+        onRefetch={refetch}
         onSearch={handleSearchSubmit}
         value={searchTerm}
       />
-      {isLoading && <Loader />}
-      {!isLoading && error && (
+      {(isFetching || isLoading) && <Loader />}
+      {!isFetching && !isLoading && error && (
         <p
           className={
             'text-red-500 font-bold text-2xl flex items-center min-h-80'
           }
         >
-          {error}
+          {String(error)}
         </p>
       )}
-      {!isLoading && !error && (
+      {!isFetching && !isLoading && !error && (
         <div className="flex w-full items-start gap-4">
           <div className="flex-1 relative pb-20">
             <Main

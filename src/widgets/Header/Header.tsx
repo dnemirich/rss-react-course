@@ -1,4 +1,4 @@
-import { PaintBrushIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon, PaintBrushIcon } from '@heroicons/react/24/outline';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ROUTES } from 'shared/constants/routes';
 import { ThemeToggler } from 'shared/theme';
@@ -7,11 +7,12 @@ import { Input } from 'shared/ui/Input';
 
 type Props = {
   onChange?: (value: string) => void;
+  onRefetch?: () => void;
   onSearch?: () => void;
   value?: string;
 };
 
-export const Header = ({ onChange, onSearch, value }: Props) => {
+export const Header = ({ onChange, onRefetch, onSearch, value }: Props) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (onSearch) onSearch();
@@ -46,6 +47,12 @@ export const Header = ({ onChange, onSearch, value }: Props) => {
                 <Button title={'Search'} type={'submit'} />
               </form>
             )}
+            <ArrowPathIcon
+              className={`cursor-pointer hover:text-lime-600 transition-colors text-stone-700 dark:text-stone-300 } '}`}
+              height={34}
+              onClick={onRefetch}
+              width={34}
+            />
             <ThemeToggler />
           </div>
         </div>
