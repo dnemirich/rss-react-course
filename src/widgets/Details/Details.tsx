@@ -1,40 +1,18 @@
-import { type Artwork, fetchArtworkById } from 'entities/artwork';
-import { useEffect, useState } from 'react';
+import { useFetchArtworkByIdQuery } from 'entities/artwork';
 import { useSearchParams } from 'react-router-dom';
 import { fieldsListLong } from 'shared/constants/items-constants.ts';
 import { Loader } from 'shared/ui/Loader';
 
 export const Details = () => {
-  const [artwork, setArtwork] = useState<Artwork | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<null | string>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const detailsId = searchParams.get('details') || '';
 
-  useEffect(() => {
-    if (!detailsId) {
-      return;
-    }
+  const { data, error, isLoading } = useFetchArtworkByIdQuery({
+    fields: fieldsListLong.join(','),
+    id: detailsId,
+  });
 
-    let ignore = false;
-    setLoading(true);
-    setError(null);
-    fetchArtworkById(detailsId, fieldsListLong.join(','))
-      .then((data) => {
-        if (!ignore) setArtwork(data.data);
-      })
-      .catch((err) => {
-        if (!ignore) setError(err instanceof Error ? err.message : String(err));
-      })
-      .finally(() => {
-        if (!ignore) setLoading(false);
-      });
-    return () => {
-      ignore = true;
-    };
-  }, [detailsId]);
-
-  if (!artwork) return null;
+  const artwork = data?.data;
 
   const onClose = () => {
     searchParams.delete('details');
@@ -46,9 +24,9 @@ export const Details = () => {
       <button className="mb-4 cursor-pointer" onClick={onClose}>
         Close
       </button>
-      {loading && <Loader />}
-      {error && <div className="min-w-[360px] p-8">{error}</div>}
-      {!loading && !error && (
+      {isLoading && <Loader />}
+      {error && <div className="min-w-[360px] p-8">{String(error)}</div>}
+      {!isLoading && !error && artwork && (
         <div>
           <div className={'absolute top-2 right-2 text-lime-600 text-md'}>
             {artwork.artwork_type_title}

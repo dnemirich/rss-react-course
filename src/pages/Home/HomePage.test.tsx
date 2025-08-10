@@ -5,7 +5,7 @@ import {
   screen,
   waitFor,
 } from '@testing-library/react';
-import * as api from 'entities/artwork/model/artworks-api.ts';
+import * as api from 'entities/artwork/services/artworks-api.ts';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { LS_KEY } from 'shared/constants/search-constants.ts';
@@ -13,7 +13,7 @@ import { store } from 'shared/lib/store.ts';
 
 import { HomePage } from './HomePage.tsx';
 
-jest.mock('entities/artwork/model/artworks-api.ts', () => ({
+jest.mock('entities/artwork/services/artworks-api.ts', () => ({
   fetchAllArtworks: jest.fn(),
 }));
 
