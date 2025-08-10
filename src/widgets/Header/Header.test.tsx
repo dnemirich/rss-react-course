@@ -76,4 +76,26 @@ describe('Header', () => {
     fireEvent.keyDown(input, { charCode: 65, code: 'KeyA', key: 'a' });
     expect(handleSearch).not.toHaveBeenCalled();
   });
+
+  it('onRefetch should be called when the refresh icon is clicked', () => {
+    const handleRefetch = jest.fn();
+    render(
+      <MemoryRouter>
+        <Header
+          onChange={() => {}}
+          onRefetch={handleRefetch}
+          onSearch={() => {}}
+          value=""
+        />
+      </MemoryRouter>
+    );
+    const refreshIcon = screen.getByLabelText(/refresh/i);
+
+    expect(refreshIcon).toBeTruthy();
+    if (refreshIcon) {
+      fireEvent.click(refreshIcon);
+    }
+
+    expect(handleRefetch).toHaveBeenCalled();
+  });
 });

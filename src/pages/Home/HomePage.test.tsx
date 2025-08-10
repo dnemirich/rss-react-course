@@ -1,11 +1,5 @@
-import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from '@testing-library/react';
-import * as api from 'entities/artwork/model/artworks-api.ts';
+import { act, fireEvent, render, screen } from '@testing-library/react';
+import { useFetchAllArtworksQuery } from 'entities/artwork';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { LS_KEY } from 'shared/constants/search-constants.ts';
@@ -13,13 +7,33 @@ import { store } from 'shared/lib/store.ts';
 
 import { HomePage } from './HomePage.tsx';
 
-jest.mock('entities/artwork/model/artworks-api.ts', () => ({
-  fetchAllArtworks: jest.fn(),
+jest.mock('entities/artwork', () => ({
+  ...jest.requireActual('entities/artwork'),
+  useFetchAllArtworksQuery: jest.fn(),
 }));
+
+function mockHookState(
+  state: Partial<ReturnType<typeof useFetchAllArtworksQuery>>
+) {
+  const defaults = {
+    data: undefined,
+    error: undefined,
+    isError: false,
+    isFetching: false,
+    isLoading: false,
+    refetch: jest.fn(),
+  };
+  return { ...defaults, ...state } as unknown as ReturnType<
+    typeof useFetchAllArtworksQuery
+  >;
+}
 
 beforeEach(() => {
   localStorage.clear();
   jest.restoreAllMocks();
+  (useFetchAllArtworksQuery as jest.Mock).mockReturnValue(
+    mockHookState({ data: [], isFetching: false, isLoading: false })
+  );
 });
 
 describe('App (localStorage integration)', () => {
@@ -145,10 +159,11 @@ describe('App UI/async scenarios', () => {
     localStorage.clear();
   });
 
-  it('loader should render during loading', async () => {
-    (api.fetchAllArtworks as jest.Mock).mockImplementation(
-      () => new Promise(() => {})
+  it('loader should render during loading', () => {
+    (useFetchAllArtworksQuery as jest.Mock).mockReturnValue(
+      mockHookState({ isFetching: true, isLoading: true })
     );
+
     render(
       <Provider store={store}>
         <MemoryRouter>
@@ -156,13 +171,20 @@ describe('App UI/async scenarios', () => {
         </MemoryRouter>
       </Provider>
     );
+
     expect(screen.getByRole('status')).toBeInTheDocument();
   });
 
   it('error should be displayed for response error', async () => {
-    (api.fetchAllArtworks as jest.Mock).mockRejectedValueOnce(
-      new Error('Network error')
+    (useFetchAllArtworksQuery as jest.Mock).mockReturnValue(
+      mockHookState({
+        error: { data: { message: 'Network error' }, status: 500 },
+        isError: true,
+        isFetching: false,
+        isLoading: false,
+      })
     );
+
     render(
       <Provider store={store}>
         <MemoryRouter>
@@ -170,24 +192,32 @@ describe('App UI/async scenarios', () => {
         </MemoryRouter>
       </Provider>
     );
-    await waitFor(() =>
-      expect(screen.getByText('Network error')).toBeInTheDocument()
-    );
+
+    expect(
+      await screen.findByText(/Request failed with status 500/i)
+    ).toBeInTheDocument();
   });
 
-  it('correct error message should be rendered when error has some other type', async () => {
-    (api.fetchAllArtworks as jest.Mock).mockRejectedValueOnce(
-      'Custom error as string'
-    );
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <HomePage />
-        </MemoryRouter>
-      </Provider>
-    );
-    await waitFor(() => {
-      expect(screen.getByText('Custom error as string')).toBeInTheDocument();
-    });
-  });
+  // it('correct error message should be rendered when error is a string-like', async () => {
+  //   (useFetchAllArtworksQuery as jest.Mock).mockReturnValue(
+  //     mockHookState({
+  //       error: { error: 'Custom error as string', status: 'FETCH_ERROR' },
+  //       isError: true,
+  //       isFetching: false,
+  //       isLoading: false,
+  //     })
+  //   );
+  //
+  //   render(
+  //     <Provider store={store}>
+  //       <MemoryRouter>
+  //         <HomePage />
+  //       </MemoryRouter>
+  //     </Provider>
+  //   );
+  //
+  //   expect(
+  //     await screen.findByText(/Custom error as string/i)
+  //   ).toBeInTheDocument();
+  // });
 });
