@@ -1,12 +1,16 @@
+'use client';
+
 import { ArrowPathIcon } from '@heroicons/react/20/solid';
 import { useFetchArtworkByIdQuery } from 'entities/artwork';
-import { useSearchParams } from 'react-router-dom';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { fieldsListLong } from 'shared/constants/items-constants.ts';
 import { Loader } from 'shared/ui/Loader';
 import { handleError } from 'shared/utils/handleError.ts';
 
 export const Details = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
   const detailsId = searchParams.get('details') || '';
 
   const { data, error, isFetching, isLoading, refetch } =
@@ -18,8 +22,9 @@ export const Details = () => {
   const artwork = data?.data;
 
   const onClose = () => {
-    searchParams.delete('details');
-    setSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('details');
+    router.replace(`?${params.toString()}`);
   };
 
   return (

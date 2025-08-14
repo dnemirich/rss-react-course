@@ -1,3 +1,5 @@
+'use client';
+
 import type { ChangeEvent, InputHTMLAttributes } from 'react';
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {

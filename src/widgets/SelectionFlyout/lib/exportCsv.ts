@@ -2,7 +2,7 @@ import { type Artwork, artworkApi } from 'entities/artwork';
 import { saveAs } from 'file-saver';
 import { unparse } from 'papaparse';
 import { fieldsListLong } from 'shared/constants/items-constants.ts';
-import { store } from 'shared/lib/store.ts';
+import { store } from 'shared/lib/store/store.ts';
 
 export async function fetchArtworkByIdViaRtk(id: string, fields: string) {
   try {

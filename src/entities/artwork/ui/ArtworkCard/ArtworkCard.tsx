@@ -1,3 +1,5 @@
+'use client';
+
 import { imgUrl } from 'shared/constants/items-constants.ts';
 
 import type { Artwork } from '../../model';

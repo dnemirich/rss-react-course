@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { store } from 'shared/lib/store.ts';
+import { store } from 'shared/lib/store/store.ts';
 import { mockArtworkData } from 'shared/utils/test-utils/mock-data.ts';
 
 import { CardsList } from './CardsList.tsx';

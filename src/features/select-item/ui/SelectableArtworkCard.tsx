@@ -1,5 +1,7 @@
+'use client';
+
 import { type Artwork, ArtworkCard } from 'entities/artwork';
-import { useAppDispatch, useAppSelector } from 'shared/lib/hooks.ts';
+import { useAppDispatch, useAppSelector } from 'shared/lib/store/hooks.ts';
 
 import { isSelected, toggleSelection } from '../model';
 

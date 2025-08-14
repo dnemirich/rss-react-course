@@ -1,3 +1,5 @@
+'use client';
+
 import { ArrowLongLeftIcon } from '@heroicons/react/16/solid';
 import { ArrowLongRightIcon } from '@heroicons/react/16/solid';
 

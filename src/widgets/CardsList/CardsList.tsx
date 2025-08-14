@@ -1,3 +1,5 @@
+'use client';
+
 import { type Artwork } from 'entities/artwork';
 import { SelectableArtworkCard } from 'features/select-item';
 

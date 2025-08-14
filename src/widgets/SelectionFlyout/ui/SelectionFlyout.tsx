@@ -1,3 +1,5 @@
+'use client';
+
 import type { Artwork } from 'entities/artwork';
 
 import { Button } from 'shared/ui/Button';
@@ -17,7 +19,7 @@ export const SelectionFlyout = ({ onClear, selectedItems }: Props) => {
   };
 
   return (
-    <div className="fixed bottom-2 left-2 right-0 rounded-sm bg-stone-200 dark:bg-stone-600 shadow p-4 flex flex-col gap-3.5 items-center w-100 h-30">
+    <div className="fixed bottom-2 left-2 right-0 rounded-sm bg-stone-200 dark:bg-stone-600 shadow p-4 flex flex-col gap-3.5 items-center w-[300px] h-30">
       <div className="text-lg">
         {selectedItemsCount} {selectedItemsCount === 1 ? 'item' : 'items'}{' '}
         selected

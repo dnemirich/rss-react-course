@@ -1,9 +1,13 @@
+'use client';
+
 import { ArrowPathIcon, PaintBrushIcon } from '@heroicons/react/24/outline';
-import { NavLink, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ROUTES } from 'shared/constants/routes';
-import { ThemeToggler } from 'shared/theme';
 import { Button } from 'shared/ui/Button';
 import { Input } from 'shared/ui/Input';
+
+import { ThemeToggler } from '../../providers/theme';
 
 type Props = {
   onChange?: (value: string) => void;
@@ -19,7 +23,7 @@ export const Header = ({ onChange, onRefetch, onSearch, value }: Props) => {
   };
   const showForm = onChange && onSearch;
 
-  const navigate = useNavigate();
+  const navigate = useRouter();
 
   return (
     <header className={'bg-stone-100 dark:bg-stone-900 p-6 shadow-md w-screen'}>
@@ -28,14 +32,14 @@ export const Header = ({ onChange, onRefetch, onSearch, value }: Props) => {
           <PaintBrushIcon
             className={'hover:text-lime-600 cursor-pointer'}
             height={30}
-            onClick={() => navigate(ROUTES.HOME)}
+            onClick={() => navigate.push(ROUTES.HOME)}
             width={30}
           />
-          <NavLink to={ROUTES.ABOUT}>
+          <Link href={ROUTES.ABOUT}>
             <span className={'hover:text-lime-600 transition-colors text-lg'}>
               ABOUT
             </span>
-          </NavLink>
+          </Link>
           <div className={'flex gap-5 items-center'}>
             {showForm && (
               <form
@@ -47,13 +51,15 @@ export const Header = ({ onChange, onRefetch, onSearch, value }: Props) => {
                 <Button title={'Search'} type={'submit'} />
               </form>
             )}
-            <ArrowPathIcon
-              aria-label="refresh"
-              className={`cursor-pointer hover:text-lime-600 transition-colors text-stone-700 dark:text-stone-300 } '}`}
-              height={34}
-              onClick={onRefetch}
-              width={34}
-            />
+            {showForm && (
+              <ArrowPathIcon
+                aria-label="refresh"
+                className={`cursor-pointer hover:text-lime-600 transition-colors text-stone-700 dark:text-stone-300 } '}`}
+                height={34}
+                onClick={onRefetch}
+                width={34}
+              />
+            )}
             <ThemeToggler />
           </div>
         </div>
